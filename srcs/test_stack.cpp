@@ -6,10 +6,11 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 16:28:16 by jodufour          #+#    #+#             */
-/*   Updated: 2022/10/31 15:20:12 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/01 14:43:11 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "_type_traits.hpp"
 #include "arrays.hpp"
 #include "benchmark.hpp"
 #include "colors.hpp"
@@ -121,7 +122,7 @@ inline static int	__test_default_template_type_Container(void)
 	typedef ft::stack<float>						sta_type_0;
 	typedef ft::stack<float, ft::vector<float> >	sta_type_1;
 
-	if (!is_same<sta_type_0, sta_type_1>::value)
+	if (!tester::is_same<sta_type_0, sta_type_1>::value)
 		return KO;
 
 	return IMP_OK;
@@ -134,7 +135,7 @@ inline static int	__test_type_value_type(void)
 	{
 		typedef ft::stack<t_lint, std::vector<t_lint> >	sta_type;
 
-		if (!is_same<sta_type::value_type, t_lint>::value)
+		if (!tester::is_same<sta_type::value_type, t_lint>::value)
 			return KO;
 	}
 	catch (std::exception const &e)
@@ -152,7 +153,7 @@ inline static int	__test_type_size_type(void)
 	{
 		typedef ft::stack<t_lint, std::vector<t_lint> >	sta_type;
 
-		if (!is_same<sta_type::size_type, std::vector<t_lint>::size_type>::value)
+		if (!tester::is_same<sta_type::size_type, std::vector<t_lint>::size_type>::value)
 			return KO;
 	}
 	catch (std::exception const &e)
@@ -170,7 +171,7 @@ inline static int	__test_type_container_type(void)
 	{
 		typedef ft::stack<t_lint, std::vector<t_lint> >	sta_type;
 
-		if (!is_same<sta_type::container_type, std::vector<t_lint> >::value)
+		if (!tester::is_same<sta_type::container_type, std::vector<t_lint> >::value)
 			return KO;
 	}
 	catch (std::exception const &e)
@@ -855,7 +856,7 @@ inline static int	__test_operator_greater_or_equivalent(void)
 
 int	test_stack(void)
 {
-	t_test const	tests[] = {
+	t_fct const	tests[] = {
 		__test_constructor_default,
 		__test_constructor_wrapper,
 		__test_default_template_type_Container,

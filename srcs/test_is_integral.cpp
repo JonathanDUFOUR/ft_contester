@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 16:00:25 by jodufour          #+#    #+#             */
-/*   Updated: 2022/10/31 14:53:06 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/01 14:39:32 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -327,7 +327,7 @@ inline static int	__test_ft_input_iterator_restrictor(void)
 
 int	test_is_integral(void)
 {
-	t_test const	tests[] = {
+	t_fct const	tests[] = {
 		__test_bool,
 		__test_wchar_t,
 		__test_char,

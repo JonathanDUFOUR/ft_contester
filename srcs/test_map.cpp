@@ -6,10 +6,11 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:13:27 by jodufour          #+#    #+#             */
-/*   Updated: 2022/10/31 14:56:03 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/01 14:39:45 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "_type_traits.hpp"
 #include "arrays.hpp"
 #include "benchmark.hpp"
 #include "colors.hpp"
@@ -262,7 +263,7 @@ inline static int	__test_default_template_type_Compare(void)
 	typedef ft::map<float, t_hint>						map_type_0;
 	typedef ft::map<float, t_hint, std::less<float> >	map_type_1;
 
-	if (!is_same<map_type_0, map_type_1>::value)
+	if (!tester::is_same<map_type_0, map_type_1>::value)
 		return KO;
 
 	return IMP_OK;
@@ -275,7 +276,7 @@ inline static int	__test_default_template_type_Alloc(void)
 	typedef ft::map<float, t_hint>																		map_type_0;
 	typedef ft::map<float, t_hint, std::less<float>, std::allocator<ft::pair<float const, t_hint> > >	map_type_1;
 
-	if (!is_same<map_type_0, map_type_1>::value)
+	if (!tester::is_same<map_type_0, map_type_1>::value)
 		return KO;
 
 	return IMP_OK;
@@ -288,7 +289,7 @@ inline static int	__test_type_key_type(void)
 	{
 		typedef ft::map<t_lint, long double>	map_type;
 
-		if (!is_same<map_type::key_type, t_lint>::value)
+		if (!tester::is_same<map_type::key_type, t_lint>::value)
 			return KO;
 	}
 	catch (std::exception const &e)
@@ -306,7 +307,7 @@ inline static int	__test_type_mapped_type(void)
 	{
 		typedef ft::map<t_lint, long double>	map_type;
 
-		if (!is_same<map_type::mapped_type, long double>::value)
+		if (!tester::is_same<map_type::mapped_type, long double>::value)
 			return KO;
 	}
 	catch (std::exception const &e)
@@ -324,7 +325,7 @@ inline static int	__test_type_value_type(void)
 	{
 		typedef ft::map<t_lint, long double>	map_type;
 
-		if (!is_same<map_type::value_type, ft::pair<t_lint const, long double> >::value)
+		if (!tester::is_same<map_type::value_type, ft::pair<t_lint const, long double> >::value)
 			return KO;
 	}
 	catch (std::exception const &e)
@@ -342,7 +343,7 @@ inline static int	__test_type_key_compare(void)
 	{
 		typedef ft::map<t_lint, long double, std::less<int> >	map_type;
 
-		if (!is_same<map_type::key_compare, std::less<int> >::value)
+		if (!tester::is_same<map_type::key_compare, std::less<int> >::value)
 			return KO;
 	}
 	catch (std::exception const &e)
@@ -360,7 +361,7 @@ inline static int	__test_type_allocator_type(void)
 	{
 		typedef ft::map<t_lint, long double, std::less<int>, std::allocator<char> >	map_type;
 
-		if (!is_same<map_type::allocator_type, std::allocator<char> >::value)
+		if (!tester::is_same<map_type::allocator_type, std::allocator<char> >::value)
 			return KO;
 	}
 	catch (std::exception const &e)
@@ -378,7 +379,7 @@ inline static int	__test_type_reference(void)
 	{
 		typedef ft::map<t_lint, long double, std::less<int>, std::allocator<char> >	map_type;
 
-		if (!is_same<map_type::reference, std::allocator<char>::reference >::value)
+		if (!tester::is_same<map_type::reference, std::allocator<char>::reference >::value)
 			return KO;
 	}
 	catch (std::exception const &e)
@@ -396,7 +397,7 @@ inline static int	__test_type_const_reference(void)
 	{
 		typedef ft::map<t_lint, long double, std::less<int>, std::allocator<char> >	map_type;
 
-		if (!is_same<map_type::const_reference, std::allocator<char>::const_reference >::value)
+		if (!tester::is_same<map_type::const_reference, std::allocator<char>::const_reference >::value)
 			return KO;
 	}
 	catch (std::exception const &e)
@@ -414,7 +415,7 @@ inline static int	__test_type_pointer(void)
 	{
 		typedef ft::map<t_lint, long double, std::less<int>, std::allocator<char> >	map_type;
 
-		if (!is_same<map_type::pointer, std::allocator<char>::pointer >::value)
+		if (!tester::is_same<map_type::pointer, std::allocator<char>::pointer >::value)
 			return KO;
 	}
 	catch (std::exception const &e)
@@ -432,7 +433,7 @@ inline static int	__test_type_const_pointer(void)
 	{
 		typedef ft::map<t_lint, long double, std::less<int>, std::allocator<char> >	map_type;
 
-		if (!is_same<map_type::const_pointer, std::allocator<char>::const_pointer >::value)
+		if (!tester::is_same<map_type::const_pointer, std::allocator<char>::const_pointer >::value)
 			return KO;
 	}
 	catch (std::exception const &e)
@@ -856,10 +857,8 @@ inline static int	__test_function_empty(void)
 inline static int	__test_function_begin_constant(void)
 {
 	t_uint	idx;
-	int		ret;
 
 	title(__func__);
-	ret = IMP_OK;
 	try
 	{
 		std::vector<ft::pair<char, int> >	ft_vec;
@@ -891,8 +890,6 @@ inline static int	__test_function_begin_constant(void)
 
 			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-			if (!!ft_ret.base() != !!std_ret._M_node)
-				ret = ISO_OK;
 			if (ft_ret->first != std_ret->first || ft_ret->second != std_ret->second)
 				return KO;
 		}
@@ -911,25 +908,20 @@ inline static int	__test_function_begin_constant(void)
 		g_std_duration += !g_std_duration;
 
 		g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-		if (!!ft_ret.base() != !!std_ret._M_node)
-			ret = ISO_OK;
 	}
 	catch (std::exception const &e)
 	{
 		std::cerr << "Exception: " << e.what() << '\n';
 		return KO;
 	}
-	return ret;
+	return IMP_OK;
 }
 
 inline static int	__test_function_begin_mutable(void)
 {
 	t_uint	idx;
-	int		ret;
 
 	title(__func__);
-	ret = IMP_OK;
 	try
 	{
 		std::vector<ft::pair<char, int> >	ft_vec;
@@ -961,8 +953,6 @@ inline static int	__test_function_begin_mutable(void)
 
 			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-			if (!!ft_ret.base() != !!std_ret._M_node)
-				ret = ISO_OK;
 			if (ft_ret->first != std_ret->first || ++ft_ret->second != ++std_ret->second)
 				return KO;
 		}
@@ -981,25 +971,20 @@ inline static int	__test_function_begin_mutable(void)
 		g_std_duration += !g_std_duration;
 
 		g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-		if (!!ft_ret.base() != !!std_ret._M_node)
-			ret = ISO_OK;
 	}
 	catch (std::exception const &e)
 	{
 		std::cerr << "Exception: " << e.what() << '\n';
 		return KO;
 	}
-	return ret;
+	return IMP_OK;
 }
 
 inline static int	__test_function_end_constant(void)
 {
 	t_uint	idx;
-	int		ret;
 
 	title(__func__);
-	ret = IMP_OK;
 	try
 	{
 		std::vector<ft::pair<char, int> >	ft_vec;
@@ -1031,9 +1016,6 @@ inline static int	__test_function_end_constant(void)
 
 			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-			if (!!ft_ret.base() != !!std_ret._M_node)
-				ret = ISO_OK;
-
 			--ft_ret;
 			--std_ret;
 
@@ -1055,9 +1037,6 @@ inline static int	__test_function_end_constant(void)
 		g_std_duration += !g_std_duration;
 
 		g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-		if (!!ft_ret.base() != !!std_ret._M_node)
-			ret = ISO_OK;
 	}
 	catch (std::exception const &e)
 	{
@@ -1070,10 +1049,8 @@ inline static int	__test_function_end_constant(void)
 inline static int	__test_function_end_mutable(void)
 {
 	t_uint	idx;
-	int		ret;
 
 	title(__func__);
-	ret = IMP_OK;
 	try
 	{
 		std::vector<ft::pair<char, int> >	ft_vec;
@@ -1105,9 +1082,6 @@ inline static int	__test_function_end_mutable(void)
 
 			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-			if (!!ft_ret.base() != !!std_ret._M_node)
-				ret = ISO_OK;
-
 			--ft_ret;
 			--std_ret;
 
@@ -1129,9 +1103,6 @@ inline static int	__test_function_end_mutable(void)
 		g_std_duration += !g_std_duration;
 
 		g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-		if (!!ft_ret.base() != !!std_ret._M_node)
-			ret = ISO_OK;
 	}
 	catch (std::exception const &e)
 	{
@@ -1144,10 +1115,8 @@ inline static int	__test_function_end_mutable(void)
 inline static int	__test_function_rbegin_constant(void)
 {
 	t_uint	idx;
-	int		ret;
 
 	title(__func__);
-	ret = IMP_OK;
 	try
 	{
 		std::vector<ft::pair<char, int> >	ft_vec;
@@ -1179,8 +1148,6 @@ inline static int	__test_function_rbegin_constant(void)
 
 			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-			if (!!ft_ret.base().base() != !!std_ret.base()._M_node)
-				ret = ISO_OK;
 			if (ft_ret->first != std_ret->first || ft_ret->second != std_ret->second)
 				return KO;
 		}
@@ -1199,29 +1166,24 @@ inline static int	__test_function_rbegin_constant(void)
 		g_std_duration += !g_std_duration;
 
 		g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-		if (!!ft_ret.base().base() != !!std_ret.base()._M_node)
-			ret = ISO_OK;
 	}
 	catch (std::exception const &e)
 	{
 		std::cerr << "Exception: " << e.what() << '\n';
 		return KO;
 	}
-	return ret;
+	return IMP_OK;
 }
 
 inline static int	__test_function_rbegin_mutable(void)
 {
 	t_uint	idx;
-	int		ret;
 
 	title(__func__);
-	ret = IMP_OK;
 	try
 	{
-		std::vector<ft::pair<char, int> >		ft_vec;
-		std::vector<std::pair<char, int> >		std_vec;
+		std::vector<ft::pair<char, int> >	ft_vec;
+		std::vector<std::pair<char, int> >	std_vec;
 
 		for (idx = 0U ; idx < g_char_size && idx < g_int_size ; ++idx)
 		{
@@ -1249,8 +1211,6 @@ inline static int	__test_function_rbegin_mutable(void)
 
 			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-			if (!!ft_ret.base().base() != !!std_ret.base()._M_node)
-				ret = ISO_OK;
 			if (ft_ret->first != std_ret->first || ++ft_ret->second != ++std_ret->second)
 				return KO;
 		}
@@ -1269,25 +1229,20 @@ inline static int	__test_function_rbegin_mutable(void)
 		g_std_duration += !g_std_duration;
 
 		g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-		if (!!ft_ret.base().base() != !!std_ret.base()._M_node)
-			ret = ISO_OK;
 	}
 	catch (std::exception const &e)
 	{
 		std::cerr << "Exception: " << e.what() << '\n';
 		return KO;
 	}
-	return ret;
+	return IMP_OK;
 }
 
 inline static int	__test_function_rend_constant(void)
 {
 	t_uint	idx;
-	int		ret;
 
 	title(__func__);
-	ret = IMP_OK;
 	try
 	{
 		std::vector<ft::pair<char, int> >	ft_vec;
@@ -1319,9 +1274,6 @@ inline static int	__test_function_rend_constant(void)
 
 			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-			if (!!ft_ret.base().base() != !!std_ret.base()._M_node)
-				ret = ISO_OK;
-
 			--ft_ret;
 			--std_ret;
 
@@ -1343,25 +1295,20 @@ inline static int	__test_function_rend_constant(void)
 		g_std_duration += !g_std_duration;
 
 		g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-		if (!!ft_ret.base().base() != !!std_ret.base()._M_node)
-			ret = ISO_OK;
 	}
 	catch (std::exception const &e)
 	{
 		std::cerr << "Exception: " << e.what() << '\n';
 		return KO;
 	}
-	return ret;
+	return IMP_OK;
 }
 
 inline static int	__test_function_rend_mutable(void)
 {
 	t_uint	idx;
-	int		ret;
 
 	title(__func__);
-	ret = IMP_OK;
 	try
 	{
 		std::vector<ft::pair<char, int> >	ft_vec;
@@ -1393,9 +1340,6 @@ inline static int	__test_function_rend_mutable(void)
 
 			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-			if (!!ft_ret.base().base() != !!std_ret.base()._M_node)
-				ret = ISO_OK;
-
 			--ft_ret;
 			--std_ret;
 
@@ -1417,16 +1361,13 @@ inline static int	__test_function_rend_mutable(void)
 		g_std_duration += !g_std_duration;
 
 		g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-		if (!!ft_ret.base().base() != !!std_ret.base()._M_node)
-			ret = ISO_OK;
 	}
 	catch (std::exception const &e)
 	{
 		std::cerr << "Exception: " << e.what() << '\n';
 		return KO;
 	}
-	return ret;
+	return IMP_OK;
 }
 
 inline static int	__test_type_iterator(void)
@@ -3824,7 +3765,7 @@ inline static int	__test_operator_greater_or_equivalent(void)
 
 int	test_map(void)
 {
-	t_test const	tests[] = {
+	t_fct const	tests[] = {
 		__test_constructor_default,
 		__test_constructor_range,
 		__test_constructor_copy,

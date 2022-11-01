@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 15:09:45 by jodufour          #+#    #+#             */
-/*   Updated: 2022/10/31 14:48:39 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/01 14:39:21 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1130,7 +1130,7 @@ inline static int	__test_lexicographical_compare(void)
 
 int	test_algorithm(void)
 {
-	t_test const	tests[] = {
+	t_fct const	tests[] = {
 		__test_equal,
 		__test_lexicographical_compare,
 		NULL

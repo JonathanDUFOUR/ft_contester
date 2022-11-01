@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 12:13:04 by jodufour          #+#    #+#             */
-/*   Updated: 2022/10/31 15:03:13 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/01 14:40:03 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1150,7 +1150,7 @@ inline static int	__test_operator_assign(void)
 
 int	test_rb_tree(void)
 {
-	t_test const	tests[] = {
+	t_fct const	tests[] = {
 		__test_constructor,
 		__test_accessor_getNil,
 		__test_accessor_getRoot,

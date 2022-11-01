@@ -6,10 +6,11 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/28 18:36:04 by jodufour          #+#    #+#             */
-/*   Updated: 2022/10/31 15:24:07 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/01 14:43:22 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "_type_traits.hpp"
 #include "arrays.hpp"
 #include "benchmark.hpp"
 #include "colors.hpp"
@@ -571,7 +572,7 @@ inline static int	__test_default_template_type_Alloc(void)
 	typedef ft::vector<float>							vec_type_0;
 	typedef ft::vector<float, std::allocator<float> >	vec_type_1;
 
-	if (!is_same<vec_type_0, vec_type_1>::value)
+	if (!tester::is_same<vec_type_0, vec_type_1>::value)
 		return KO;
 
 	return IMP_OK;
@@ -583,7 +584,7 @@ inline static int	__test_type_value_type(void)
 
 	typedef ft::vector<t_lint, std::allocator<t_lint> >	vec_type;
 
-	if (!is_same<vec_type::value_type, t_lint>::value)
+	if (!tester::is_same<vec_type::value_type, t_lint>::value)
 		return KO;
 
 	return IMP_OK;
@@ -595,7 +596,7 @@ inline static int	__test_type_allocator_type(void)
 
 	typedef ft::vector<t_lint, std::allocator<t_lint> >	vec_type;
 
-	if (!is_same<vec_type::allocator_type, std::allocator<t_lint> >::value)
+	if (!tester::is_same<vec_type::allocator_type, std::allocator<t_lint> >::value)
 		return KO;
 
 	return IMP_OK;
@@ -607,7 +608,7 @@ inline static int	__test_type_reference(void)
 
 	typedef ft::vector<t_lint, std::allocator<t_lint> >	vec_type;
 
-	if (!is_same<vec_type::reference, std::allocator<t_lint>::reference>::value)
+	if (!tester::is_same<vec_type::reference, std::allocator<t_lint>::reference>::value)
 		return KO;
 
 	return IMP_OK;
@@ -619,7 +620,7 @@ inline static int	__test_type_const_reference(void)
 
 	typedef ft::vector<t_lint, std::allocator<t_lint> >	vec_type;
 
-	if (!is_same<vec_type::const_reference, std::allocator<t_lint>::const_reference>::value)
+	if (!tester::is_same<vec_type::const_reference, std::allocator<t_lint>::const_reference>::value)
 		return KO;
 
 	return IMP_OK;
@@ -631,7 +632,7 @@ inline static int	__test_type_pointer(void)
 
 	typedef ft::vector<t_lint, std::allocator<t_lint> >	vec_type;
 
-	if (!is_same<vec_type::pointer, std::allocator<t_lint>::pointer>::value)
+	if (!tester::is_same<vec_type::pointer, std::allocator<t_lint>::pointer>::value)
 		return KO;
 
 	return IMP_OK;
@@ -643,7 +644,7 @@ inline static int	__test_type_const_pointer(void)
 
 	typedef ft::vector<t_lint, std::allocator<t_lint> >	vec_type;
 
-	if (!is_same<vec_type::const_pointer, std::allocator<t_lint>::const_pointer>::value)
+	if (!tester::is_same<vec_type::const_pointer, std::allocator<t_lint>::const_pointer>::value)
 		return KO;
 
 	return IMP_OK;
@@ -3215,7 +3216,7 @@ inline static int	__test_operator_greater_or_equivalent(void)
 
 int	test_vector(void)
 {
-	t_test const	tests[] = {
+	t_fct const	tests[] = {
 		__test_constructor_default,
 		__test_constructor_fill,
 		__test_constructor_range,

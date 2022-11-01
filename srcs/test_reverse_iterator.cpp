@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 09:40:33 by jodufour          #+#    #+#             */
-/*   Updated: 2022/10/31 15:07:41 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/01 14:41:55 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1119,7 +1119,7 @@ inline static int	__test_operator_greater_or_equivalent(void)
 
 int	test_reverse_iterator(void)
 {
-	t_test const	tests[] = {
+	t_fct const	tests[] = {
 		__test_constructor,
 		__test_function_base,
 		__test_operator_assign,

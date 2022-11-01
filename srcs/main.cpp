@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 06:00:18 by jodufour          #+#    #+#             */
-/*   Updated: 2022/10/08 16:11:09 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/01 15:33:55 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,24 +31,41 @@ static void	__init(void)
 	srand(time(NULL));
 }
 
-int	main(void)
+int	main(int const ac, char const *const *av)
 {
 	t_test const	tests[] = {
-		test_pair,
-		test_reverse_iterator,
-		test_is_integral,
-		test_algorithm,
-		test_rb_tree,
-		test_vector,
-		test_stack,
-		test_map,
-		test_set,
-		NULL
+		{std::string("is_integral"), test_is_integral, true},
+		{std::string("pair"), test_pair, true},
+		{std::string("reverse_iterator"), test_reverse_iterator, true},
+		{std::string("algorithm"), test_algorithm, true},
+		// {std::string("rb_tree"), test_rb_tree, false},
+		{std::string("vector"), test_vector, true},
+		{std::string("stack"), test_stack, true},
+		{std::string("map"), test_map, true},
+		{std::string("set"), test_set, false},
+		{std::string(""), NULL, false}
 	};
-	t_uint	koCount;
-	t_uint	idx;
+	std::string		test_name;
+	t_uint			koCount;
+	t_uint			idx;
 
-	for (koCount = 0, idx = 0 ; tests[idx] ; ++idx)
-		koCount += tests[idx]();
+	koCount = 0U;
+	if (ac == 1)
+	{
+		for (idx = 0U ; tests[idx].function ; ++idx)
+			if (tests[idx].run_as_default)
+				koCount += tests[idx].function();
+	}
+	else
+	{
+		for (++av ; *av ; ++av)
+		{
+			for (test_name = *av, idx = 0U ; tests[idx].function && test_name != tests[idx].name ; ++idx);
+			if (tests[idx].function)
+				koCount += tests[idx].function();
+			else
+				std::cout << "Test '" << test_name << "' not found" << std::endl;
+		}
+	}
 	return !!koCount;
 }

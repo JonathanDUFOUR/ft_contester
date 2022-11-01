@@ -6,7 +6,7 @@
 #    By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/27 10:35:48 by jodufour          #+#    #+#              #
-#    Updated: 2022/10/31 14:53:58 by jodufour         ###   ########.fr        #
+#    Updated: 2022/11/01 16:19:02 by jodufour         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,6 @@ NAME		=	unit_test.out
 #######################################
 SRC_DIR		=	srcs
 OBJ_DIR		=	objs
-# INC_DIR		=	${HOME}/Documents/42/Cursus/Projects/ft_containers_anclarma/includes
 INC_DIR		=	../include
 PRV_DIR		=	private
 
@@ -43,13 +42,13 @@ SRC			=	\
 				test_is_integral.cpp		\
 				test_map.cpp				\
 				test_pair.cpp				\
-				test_rb_tree.cpp			\
 				test_reverse_iterator.cpp	\
 				test_set.cpp				\
 				test_stack.cpp				\
 				test_vector.cpp				\
 				title.cpp
 
+#				test_rb_tree.cpp			\
 
 ######################################
 #            OBJECT FILES            #
@@ -64,7 +63,7 @@ DEP			=	${OBJ:.o=.d}
 #######################################
 CXXFLAGS	=	-c
 CXXFLAGS	+=	-Wall -Wextra -Werror
-CXXFLAGS	+=	-Wshadow
+# CXXFLAGS	+=	-Wshadow
 CXXFLAGS	+=	-Weffc++
 CXXFLAGS	+=	-std=c++98
 CXXFLAGS	+=	-pedantic

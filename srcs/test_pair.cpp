@@ -6,16 +6,16 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 10:56:47 by jodufour          #+#    #+#             */
-/*   Updated: 2022/10/31 15:19:35 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/01 16:10:10 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "_type_traits.hpp"
 #include "arrays.hpp"
 #include "benchmark.hpp"
 #include "colors.hpp"
 #include "headers.hpp"
 #include "tester.hpp"
-#include "type_traits.hpp"
 #include "e_ret.hpp"
 #include PAIR_HEADER
 #include MAKE_PAIR_HEADER
@@ -131,7 +131,7 @@ inline static int	__test_type_first_type(void)
 	{
 		typedef ft::pair<long double, char>	pair_type;
 
-		if (!is_same<pair_type::first_type, long double>::value)
+		if (!tester::is_same<pair_type::first_type, long double>::value)
 			return KO;
 	}
 	catch (std::exception const &e)
@@ -149,7 +149,7 @@ inline static int	__test_type_second_type(void)
 	{
 		typedef ft::pair<long double, char>	pair_type;
 
-		if (!is_same<pair_type::second_type, char>::value)
+		if (!tester::is_same<pair_type::second_type, char>::value)
 			return KO;
 	}
 	catch (std::exception const &e)
@@ -1396,7 +1396,7 @@ inline static int	__test_operator_greater_or_equivalent(void)
 
 int	test_pair(void)
 {
-	t_test const	tests[] = {
+	t_fct const	tests[] = {
 		__test_constructor,
 		__test_type_first_type,
 		__test_type_second_type,
