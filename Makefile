@@ -6,7 +6,7 @@
 #    By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/27 10:35:48 by jodufour          #+#    #+#              #
-#    Updated: 2022/11/01 16:19:02 by jodufour         ###   ########.fr        #
+#    Updated: 2022/11/02 11:32:38 by jodufour         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,12 +43,13 @@ SRC			=	\
 				test_map.cpp				\
 				test_pair.cpp				\
 				test_reverse_iterator.cpp	\
-				test_set.cpp				\
 				test_stack.cpp				\
 				test_vector.cpp				\
 				title.cpp
 
-#				test_rb_tree.cpp			\
+#				\
+				test_rb_tree.cpp			\
+				test_set.cpp				\
 
 ######################################
 #            OBJECT FILES            #
@@ -63,7 +64,7 @@ DEP			=	${OBJ:.o=.d}
 #######################################
 CXXFLAGS	=	-c
 CXXFLAGS	+=	-Wall -Wextra -Werror
-# CXXFLAGS	+=	-Wshadow
+CXXFLAGS	+=	-Wshadow
 CXXFLAGS	+=	-Weffc++
 CXXFLAGS	+=	-std=c++98
 CXXFLAGS	+=	-pedantic

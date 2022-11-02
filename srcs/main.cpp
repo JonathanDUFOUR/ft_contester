@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/20 06:00:18 by jodufour          #+#    #+#             */
-/*   Updated: 2022/11/01 15:33:55 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/02 11:23:32 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	main(int const ac, char const *const *av)
 		{std::string("vector"), test_vector, true},
 		{std::string("stack"), test_stack, true},
 		{std::string("map"), test_map, true},
-		{std::string("set"), test_set, false},
+		// {std::string("set"), test_set, false},
 		{std::string(""), NULL, false}
 	};
 	std::string		test_name;
