@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 14:06:03 by jodufour          #+#    #+#             */
-/*   Updated: 2022/11/02 11:30:18 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/07 09:05:08 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # define STACK_HEADER "stack.hpp"
 # define MAP_HEADER "map.hpp"
 # define SET_HEADER "set.hpp"
-# define ITERATOR_TRAITS_HEADER "iterator_traits.hpp"
-# define REVERSE_ITERATOR_HEADER "iterator.hpp"
+# define ITERATOR_TRAITS_HEADER "iterator.hpp"
+# define REVERSE_ITERATOR_HEADER "iterator/spec/reverse_iterator.tpp"
 # define ENABLE_IF_HEADER "type_traits.hpp"
 # define IS_INTEGRAL_HEADER "type_traits.hpp"
 # define EQUAL_HEADER "algorithm.hpp"

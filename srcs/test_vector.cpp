@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/28 18:36:04 by jodufour          #+#    #+#             */
-/*   Updated: 2022/11/01 14:43:22 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/07 08:57:58 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 #include "iterator/requirements_check.tpp"
 #include "iterator/restrictor/random_access_iterator_restrictor.tpp"
 #include "tester.hpp"
-#include "utility.hpp"
 #include "e_ret.hpp"
 #include VECTOR_HEADER
 #include <cmath>
@@ -922,7 +921,7 @@ inline static int	__test_function_begin_constant(void)
 
 			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-			if (!!ft_ret.base() != !!std_ret.base() || (ft_ret.base() && std_ret.base() && *ft_ret != *std_ret))
+			if (ft_vec.size() && std_vec.size() && *ft_ret != *std_ret)
 				return KO;
 		}
 	}
@@ -966,7 +965,7 @@ inline static int	__test_function_begin_mutable(void)
 
 			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-			if (!!ft_ret.base() != !!std_ret.base() || (ft_ret.base() && std_ret.base() && *ft_ret != *std_ret))
+			if (ft_vec.size() && std_vec.size() && *ft_ret != *std_ret)
 				return KO;
 		}
 	}
@@ -1010,7 +1009,7 @@ inline static int	__test_function_end_constant(void)
 
 			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-			if (!!ft_ret.base() != !!std_ret.base() || (ft_ret.base() && std_ret.base() && *--ft_ret != *--std_ret))
+			if (ft_vec.size() && std_vec.size() && *--ft_ret != *--std_ret)
 				return KO;
 		}
 	}
@@ -1054,7 +1053,7 @@ inline static int	__test_function_end_mutable(void)
 
 			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-			if (!!ft_ret.base() != !!std_ret.base() || (ft_ret.base() && std_ret.base() && *--ft_ret != *--std_ret))
+			if (ft_vec.size() && std_vec.size() && *--ft_ret != *--std_ret)
 				return KO;
 		}
 	}
@@ -1098,8 +1097,7 @@ inline static int	__test_function_rbegin_constant(void)
 
 			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-			if (!!ft_ret.base().base() != !!std_ret.base().base() ||
-				(ft_ret.base().base() && std_ret.base().base() && *ft_ret != *std_ret))
+			if (ft_vec.size() && std_vec.size() && *ft_ret != *std_ret)
 				return KO;
 		}
 	}
@@ -1143,8 +1141,7 @@ inline static int	__test_function_rbegin_mutable(void)
 
 			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-			if (!!ft_ret.base().base() != !!std_ret.base().base() ||
-				(ft_ret.base().base() && std_ret.base().base() && *ft_ret != *std_ret))
+			if (ft_vec.size() && std_vec.size() && *ft_ret != *std_ret)
 				return KO;
 		}
 	}
@@ -1188,8 +1185,7 @@ inline static int	__test_function_rend_constant(void)
 
 			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-			if (!!ft_ret.base().base() != !!std_ret.base().base() ||
-				(ft_ret.base().base() && std_ret.base().base() && *--ft_ret != *--std_ret))
+			if (ft_vec.size() && std_vec.size() && *--ft_ret != *--std_ret)
 				return KO;
 		}
 	}
@@ -1233,8 +1229,7 @@ inline static int	__test_function_rend_mutable(void)
 
 			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-			if (!!ft_ret.base().base() != !!std_ret.base().base() ||
-				(ft_ret.base().base() && std_ret.base().base() && *--ft_ret != *--std_ret))
+			if (ft_vec.size() && std_vec.size() && *--ft_ret != *--std_ret)
 				return KO;
 		}
 	}
@@ -1273,8 +1268,7 @@ inline static int	__test_type_iterator(void)
 			RandomAccessIteratorCheck(ft_it);
 			RandomAccessIteratorCheck(std_it);
 
-			if (!!ft_it.base() != !!std_it.base() ||
-				(ft_it - ft_mid) != (std_it - std_mid) || (ft_it - ft_cmid) != (std_it - std_cmid) ||
+			if ((ft_it - ft_mid) != (std_it - std_mid) || (ft_it - ft_cmid) != (std_it - std_cmid) ||
 				(ft_it < ft_mid) != (std_it < std_mid) || (ft_it < ft_cmid) != (std_it < std_cmid) ||
 				(ft_it > ft_mid) != (std_it > std_mid) || (ft_it > ft_cmid) != (std_it > std_cmid) ||
 				(ft_it <= ft_mid) != (std_it <= std_mid) || (ft_it <= ft_cmid) != (std_it <= std_cmid) ||
@@ -1319,8 +1313,7 @@ inline static int	__test_type_const_iterator(void)
 			RandomAccessIteratorCheck(ft_cit);
 			RandomAccessIteratorCheck(std_cit);
 
-			if (!!ft_cit.base() != !!std_cit.base() ||
-				(ft_cit - ft_mid) != (std_cit - std_mid) || (ft_cit - ft_cmid) != (std_cit - std_cmid) ||
+			if ((ft_cit - ft_mid) != (std_cit - std_mid) || (ft_cit - ft_cmid) != (std_cit - std_cmid) ||
 				(ft_cit < ft_mid) != (std_cit < std_mid) || (ft_cit < ft_cmid) != (std_cit < std_cmid) ||
 				(ft_cit > ft_mid) != (std_cit > std_mid) || (ft_cit > ft_cmid) != (std_cit > std_cmid) ||
 				(ft_cit <= ft_mid) != (std_cit <= std_mid) || (ft_cit <= ft_cmid) != (std_cit <= std_cmid) ||
@@ -1364,8 +1357,7 @@ inline static int	__test_type_reverse_iterator(void)
 			RandomAccessIteratorCheck(ft_rit);
 			RandomAccessIteratorCheck(std_rit);
 
-			if (!!ft_rit.base().base() != !!std_rit.base().base() ||
-				(ft_rit - ft_rend) != (std_rit - std_rend) || (ft_rit - ft_crend) != (std_rit - std_crend) ||
+			if ((ft_rit - ft_rend) != (std_rit - std_rend) || (ft_rit - ft_crend) != (std_rit - std_crend) ||
 				(ft_rit < ft_rend) != (std_rit < std_rend) || (ft_rit < ft_crend) != (std_rit < std_crend) ||
 				(ft_rit > ft_rend) != (std_rit > std_rend) || (ft_rit > ft_crend) != (std_rit > std_crend) ||
 				(ft_rit <= ft_rend) != (std_rit <= std_rend) || (ft_rit <= ft_crend) != (std_rit <= std_crend) ||
@@ -1406,8 +1398,7 @@ inline static int	__test_type_const_reverse_iterator(void)
 			RandomAccessIteratorCheck(ft_crit);
 			RandomAccessIteratorCheck(std_crit);
 
-			if (!!ft_crit.base().base() != !!std_crit.base().base() ||
-				(ft_crit - ft_vec.rend()) != (std_crit - std_vec.rend()) ||
+			if ((ft_crit - ft_vec.rend()) != (std_crit - std_vec.rend()) ||
 				(ft_crit < ft_vec.rend()) != (std_crit < std_vec.rend()) ||
 				(ft_crit > ft_vec.rend()) != (std_crit > std_vec.rend()) ||
 				(ft_crit <= ft_vec.rend()) != (std_crit <= std_vec.rend()) ||

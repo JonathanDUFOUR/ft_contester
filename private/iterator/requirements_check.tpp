@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 11:10:52 by jodufour          #+#    #+#             */
-/*   Updated: 2022/10/31 14:33:02 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/07 08:45:39 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	InputIteratorCheck(InputIterator &it)
  * 
  * @param	it The output iterator to test.
  */
-template<typename OutputIterator>
+template <typename OutputIterator>
 void	OutputIteratorCheck(OutputIterator &it)
 {
 	OutputIterator const	it0(it);
@@ -74,14 +74,12 @@ void	OutputIteratorCheck(OutputIterator &it)
  * 
  * @param	it The forward iterator to test.
  */
-template<typename ForwardIterator>
+template <typename ForwardIterator>
 void	ForwardIteratorCheck(ForwardIterator &it)
 {
-	ForwardIterator const	it0;
+	(void)ForwardIterator();
 
 	InputIteratorCheck(it);
-
-	(void)it0;
 }
 
 /**
@@ -96,15 +94,12 @@ void	ForwardIteratorCheck(ForwardIterator &it)
 template <typename BidirectionalIterator>
 void	BidirectionalIteratorCheck(BidirectionalIterator &it)
 {
-	BidirectionalIterator const	it0(it);
-	BidirectionalIterator const	it1(it--++);
-	BidirectionalIterator const	it2(--it++);
+	BidirectionalIterator	cpy(it);
+
+	--cpy;
+	cpy--;
 
 	ForwardIteratorCheck(it);
-
-	(void)it0;
-	(void)it1;
-	(void)it2;
 }
 
 /**
