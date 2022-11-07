@@ -1,4 +1,5 @@
 # ft_contester
+![Project illustration](./resource/objection.png "Objection !")
 This is my own bunch of tests for the 42 School ft_containers project.<br>
 They are designed to be run on a supposed finished project (for example, during a correction, or before set as finished).
 
