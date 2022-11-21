@@ -17,6 +17,7 @@
 #include "t_int.hpp"
 #include IS_INTEGRAL_HEADER
 #include <cstdlib>
+#include <ctime>
 #include <iostream>
 
 inline static int	__test_bool(void)
@@ -327,7 +328,7 @@ inline static int	__test_ft_input_iterator_restrictor(void)
 
 int	test_is_integral(void)
 {
-	t_fct const	tests[] = {
+	t_fct const				tests[] = {
 		__test_bool,
 		__test_wchar_t,
 		__test_char,
@@ -347,8 +348,11 @@ int	test_is_integral(void)
 		__test_ft_input_iterator_restrictor,
 		NULL
 	};
-	t_uint			koCount;
-	t_uint			idx;
+	t_uint					koCount;
+	t_uint					idx;
+	struct timespec const	delay = {SLEEP_TIME_SEC, SLEEP_TIME_NANOSEC};
+
+	nanosleep(&delay, NULL);
 
 	std::cerr << LIGHT_BLUE_FG;
 	std::cout << "###################################################" << '\n';
@@ -358,6 +362,8 @@ int	test_is_integral(void)
 
 	for (koCount = 0U, idx = 0U ; tests[idx] ; ++idx)
 	{
+		nanosleep(&delay, NULL);
+
 		switch (tests[idx]())
 		{
 			case EXIT_SUCCESS:

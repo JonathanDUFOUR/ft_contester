@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/02 12:13:04 by jodufour          #+#    #+#             */
-/*   Updated: 2022/11/01 14:40:03 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/13 19:07:36 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "utility.hpp"
 #include <algorithm>
 #include <cstdlib>
+#include <ctime>
 #include <iostream>
 #include <list>
 #include <set>
@@ -1150,7 +1151,7 @@ inline static int	__test_operator_assign(void)
 
 int	test_rb_tree(void)
 {
-	t_fct const	tests[] = {
+	t_fct const				tests[] = {
 		__test_constructor,
 		__test_accessor_getNil,
 		__test_accessor_getRoot,
@@ -1177,8 +1178,11 @@ int	test_rb_tree(void)
 		__test_operator_assign,
 		NULL
 	};
-	t_uint			koCount;
-	t_uint			idx;
+	t_uint					koCount;
+	t_uint					idx;
+	struct timespec const	delay = {SLEEP_TIME_SEC, SLEEP_TIME_NANOSEC};
+
+	nanosleep(&delay, NULL);
 
 	std::cerr << LIGHT_BLUE_FG;
 	std::cout << "###################################################" << '\n';
@@ -1188,6 +1192,8 @@ int	test_rb_tree(void)
 
 	for (koCount = 0U, idx = 0U ; tests[idx] ; ++idx)
 	{
+		nanosleep(&delay, NULL);
+
 		switch (tests[idx]())
 		{
 			case EXIT_SUCCESS:

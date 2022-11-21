@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 10:56:47 by jodufour          #+#    #+#             */
-/*   Updated: 2022/11/01 16:10:10 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/13 19:05:26 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include PAIR_HEADER
 #include MAKE_PAIR_HEADER
 #include <cstring>
+#include <ctime>
 #include <iostream>
 
 inline static int	__test_constructor(void)
@@ -1396,7 +1397,7 @@ inline static int	__test_operator_greater_or_equivalent(void)
 
 int	test_pair(void)
 {
-	t_fct const	tests[] = {
+	t_fct const				tests[] = {
 		__test_constructor,
 		__test_type_first_type,
 		__test_type_second_type,
@@ -1410,16 +1411,22 @@ int	test_pair(void)
 		__test_operator_greater_or_equivalent,
 		NULL
 	};
-	t_uint			koCount;
-	t_uint			idx;
+	t_uint					koCount;
+	t_uint					idx;
+	struct timespec const	delay = {SLEEP_TIME_SEC, SLEEP_TIME_NANOSEC};
+
+	nanosleep(&delay, NULL);
 
 	std::cerr << LIGHT_BLUE_FG;
 	std::cout << "####################################################" << '\n';
 	std::cout << "##                      PAIR                      ##" << '\n';
 	std::cout << "####################################################" << '\n';
 	std::cerr << RESET;
+
 	for (koCount = 0U, idx = 0U ; tests[idx] ; ++idx)
 	{
+		nanosleep(&delay, NULL);
+
 		switch (tests[idx]())
 		{
 			case IMP_OK:

@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:06:05 by jodufour          #+#    #+#             */
-/*   Updated: 2022/11/01 14:42:15 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/13 19:11:02 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include "e_ret.hpp"
 #include SET_HEADER
 #include <algorithm>
+#include <ctime>
 #include <iostream>
 #include <set>
 
@@ -3074,7 +3075,7 @@ inline static int	__test_operator_greater_or_equivalent(void)
 
 int	test_set(void)
 {
-	t_fct const	tests[] = {
+	t_fct const				tests[] = {
 		__test_constructor_default,
 		__test_constructor_range,
 		__test_constructor_copy,
@@ -3132,8 +3133,11 @@ int	test_set(void)
 		__test_operator_greater_or_equivalent,
 		NULL
 	};
-	t_uint			koCount;
-	t_uint			idx;
+	t_uint					koCount;
+	t_uint					idx;
+	struct timespec const	delay = {SLEEP_TIME_SEC, SLEEP_TIME_NANOSEC};
+
+	nanosleep(&delay, NULL);
 
 	std::cerr << LIGHT_BLUE_FG;
 	std::cout << "###################################################" << '\n';
@@ -3143,6 +3147,8 @@ int	test_set(void)
 
 	for (koCount = 0U, idx = 0U ; tests[idx] ; ++idx)
 	{
+		nanosleep(&delay, NULL);
+
 		switch (tests[idx]())
 		{
 			case IMP_OK:

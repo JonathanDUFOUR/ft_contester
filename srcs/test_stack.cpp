@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 16:28:16 by jodufour          #+#    #+#             */
-/*   Updated: 2022/11/01 14:43:11 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/13 19:12:32 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include STACK_HEADER
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
 #include <iomanip>
 #include <iostream>
 #include <stack>
@@ -856,7 +857,7 @@ inline static int	__test_operator_greater_or_equivalent(void)
 
 int	test_stack(void)
 {
-	t_fct const	tests[] = {
+	t_fct const				tests[] = {
 		__test_constructor_default,
 		__test_constructor_wrapper,
 		__test_default_template_type_Container,
@@ -877,8 +878,11 @@ int	test_stack(void)
 		__test_operator_greater_or_equivalent,
 		NULL
 	};
-	t_uint			koCount;
-	t_uint			idx;
+	t_uint					koCount;
+	t_uint					idx;
+	struct timespec const	delay = {SLEEP_TIME_SEC, SLEEP_TIME_NANOSEC};
+
+	nanosleep(&delay, NULL);
 
 	std::cerr << LIGHT_BLUE_FG;
 	std::cout << "###################################################" << '\n';
@@ -888,6 +892,8 @@ int	test_stack(void)
 
 	for (koCount = 0U, idx = 0U ; tests[idx] ; ++idx)
 	{
+		nanosleep(&delay, NULL);
+
 		switch (tests[idx]())
 		{
 			case IMP_OK:

@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 12:15:58 by jodufour          #+#    #+#             */
-/*   Updated: 2022/11/01 15:11:04 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/13 19:30:26 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@
 # include <cstddef>
 # include <string>
 
-# define PADDING		33
+# define PADDING			33
+# define SLEEP_TIME_SEC		0
+# define SLEEP_TIME_NANOSEC	500000000
 
-typedef int	(*			t_fct)(void);
-typedef struct s_test	t_test;
+typedef int	(*				t_fct)(void);
+typedef struct s_test		t_test;
 
 struct s_test
 {

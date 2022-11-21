@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/28 18:36:04 by jodufour          #+#    #+#             */
-/*   Updated: 2022/11/07 08:57:58 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/13 19:21:34 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -3207,7 +3208,7 @@ inline static int	__test_operator_greater_or_equivalent(void)
 
 int	test_vector(void)
 {
-	t_fct const	tests[] = {
+	t_fct const				tests[] = {
 		__test_constructor_default,
 		__test_constructor_fill,
 		__test_constructor_range,
@@ -3267,8 +3268,11 @@ int	test_vector(void)
 		__test_operator_greater_or_equivalent,
 		NULL
 	};
-	t_uint			koCount;
-	t_uint			idx;
+	t_uint					koCount;
+	t_uint					idx;
+	struct timespec const	delay = {SLEEP_TIME_SEC, SLEEP_TIME_NANOSEC};
+
+	nanosleep(&delay, NULL);
 
 	std::cerr << LIGHT_BLUE_FG;
 	std::cout << "####################################################" << '\n';
@@ -3278,6 +3282,8 @@ int	test_vector(void)
 
 	for (koCount = 0U, idx = 0U ; tests[idx] ; ++idx)
 	{
+		nanosleep(&delay, NULL);
+
 		switch (tests[idx]())
 		{
 			case IMP_OK:

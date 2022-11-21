@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 09:40:33 by jodufour          #+#    #+#             */
-/*   Updated: 2022/11/01 14:41:55 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/13 19:09:01 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include REVERSE_ITERATOR_HEADER
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
 #include <iomanip>
 #include <iostream>
 #include <limits>
@@ -1119,7 +1120,7 @@ inline static int	__test_operator_greater_or_equivalent(void)
 
 int	test_reverse_iterator(void)
 {
-	t_fct const	tests[] = {
+	t_fct const				tests[] = {
 		__test_constructor,
 		__test_function_base,
 		__test_operator_assign,
@@ -1141,8 +1142,11 @@ int	test_reverse_iterator(void)
 		__test_operator_greater_or_equivalent,
 		NULL,
 	};
-	t_uint			koCount;
-	t_uint			idx;
+	t_uint					koCount;
+	t_uint					idx;
+	struct timespec const	delay = {SLEEP_TIME_SEC, SLEEP_TIME_NANOSEC};
+
+	nanosleep(&delay, NULL);
 
 	std::cerr << LIGHT_BLUE_FG;
 	std::cout << "####################################################" << '\n';
@@ -1152,6 +1156,8 @@ int	test_reverse_iterator(void)
 
 	for (koCount = 0U, idx = 0U ; tests[idx] ; ++idx)
 	{
+		nanosleep(&delay, NULL);
+
 		switch (tests[idx]())
 		{
 			case EXIT_SUCCESS:

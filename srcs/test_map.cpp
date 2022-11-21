@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:13:27 by jodufour          #+#    #+#             */
-/*   Updated: 2022/11/01 14:39:45 by jodufour         ###   ########.fr       */
+/*   Updated: 2022/11/21 18:41:00 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include MAP_HEADER
 #include <algorithm>
 #include <cstring>
+#include <ctime>
 #include <iostream>
 #include <iterator>
 #include <list>
@@ -2470,8 +2471,8 @@ inline static int	__test_function_swap_member(void)
 			ft_cend1 = ft_map1.end();
 
 			if (ft_map0.size() != std_map0.size() || ft_map1.size() != std_map1.size() ||
-				!std::equal(ft_cit0, ft_cend1, std_cit0, __cmp<char, float>) ||
-				!std::equal(ft_cit1, ft_cend0, std_cit1, __cmp<char, float>))
+				(!ft_map0.empty() && !std::equal(ft_cit1, ft_cend0, std_cit1, __cmp<char, float>)) ||
+				(!ft_map1.empty() && !std::equal(ft_cit0, ft_cend1, std_cit0, __cmp<char, float>)))
 				return KO;
 		}
 		// Swapping empty | non-empty
@@ -2503,8 +2504,8 @@ inline static int	__test_function_swap_member(void)
 			ft_cend1 = ft_map1.end();
 
 			if (ft_map0.size() != std_map0.size() || ft_map1.size() != std_map1.size() ||
-				!std::equal(ft_cit0, ft_cend1, std_cit0, __cmp<char, float>) ||
-				!std::equal(ft_cit1, ft_cend0, std_cit1, __cmp<char, float>))
+				(!ft_map0.empty() && !std::equal(ft_cit1, ft_cend0, std_cit1, __cmp<char, float>)) ||
+				(!ft_map1.empty() && !std::equal(ft_cit0, ft_cend1, std_cit0, __cmp<char, float>)))
 				return KO;
 		}
 		// Swapping non-empty | empty
@@ -2536,8 +2537,8 @@ inline static int	__test_function_swap_member(void)
 			ft_cend1 = ft_map1.end();
 
 			if (ft_map0.size() != std_map0.size() || ft_map1.size() != std_map1.size() ||
-				!std::equal(ft_cit0, ft_cend1, std_cit0, __cmp<char, float>) ||
-				!std::equal(ft_cit1, ft_cend0, std_cit1, __cmp<char, float>))
+				(!ft_map0.empty() && !std::equal(ft_cit1, ft_cend0, std_cit1, __cmp<char, float>)) ||
+				(!ft_map1.empty() && !std::equal(ft_cit0, ft_cend1, std_cit0, __cmp<char, float>)))
 				return KO;
 		}
 		// Swapping non-empty | non-empty
@@ -2569,8 +2570,8 @@ inline static int	__test_function_swap_member(void)
 			ft_cend1 = ft_map1.end();
 
 			if (ft_map0.size() != std_map0.size() || ft_map1.size() != std_map1.size() ||
-				!std::equal(ft_cit0, ft_cend1, std_cit0, __cmp<char, float>) ||
-				!std::equal(ft_cit1, ft_cend0, std_cit1, __cmp<char, float>))
+				(!ft_map0.empty() && !std::equal(ft_cit1, ft_cend0, std_cit1, __cmp<char, float>)) ||
+				(!ft_map1.empty() && !std::equal(ft_cit0, ft_cend1, std_cit0, __cmp<char, float>)))
 				return KO;
 		}
 	}
@@ -2627,8 +2628,8 @@ inline static int	__test_function_swap_non_member(void)
 			ft_cend1 = ft_map1.end();
 
 			if (ft_map0.size() != std_map0.size() || ft_map1.size() != std_map1.size() ||
-				!std::equal(ft_cit0, ft_cend1, std_cit0, __cmp<char, float>) ||
-				!std::equal(ft_cit1, ft_cend0, std_cit1, __cmp<char, float>))
+				(!ft_map0.empty() && !std::equal(ft_cit1, ft_cend0, std_cit1, __cmp<char, float>)) ||
+				(!ft_map1.empty() && !std::equal(ft_cit0, ft_cend1, std_cit0, __cmp<char, float>)))
 				return KO;
 		}
 		// Swapping empty | non-empty
@@ -2660,8 +2661,8 @@ inline static int	__test_function_swap_non_member(void)
 			ft_cend1 = ft_map1.end();
 
 			if (ft_map0.size() != std_map0.size() || ft_map1.size() != std_map1.size() ||
-				!std::equal(ft_cit0, ft_cend1, std_cit0, __cmp<char, float>) ||
-				!std::equal(ft_cit1, ft_cend0, std_cit1, __cmp<char, float>))
+				(!ft_map0.empty() && !std::equal(ft_cit1, ft_cend0, std_cit1, __cmp<char, float>)) ||
+				(!ft_map1.empty() && !std::equal(ft_cit0, ft_cend1, std_cit0, __cmp<char, float>)))
 				return KO;
 		}
 		// Swapping non-empty | empty
@@ -2693,8 +2694,8 @@ inline static int	__test_function_swap_non_member(void)
 			ft_cend1 = ft_map1.end();
 
 			if (ft_map0.size() != std_map0.size() || ft_map1.size() != std_map1.size() ||
-				!std::equal(ft_cit0, ft_cend1, std_cit0, __cmp<char, float>) ||
-				!std::equal(ft_cit1, ft_cend0, std_cit1, __cmp<char, float>))
+				(!ft_map0.empty() && !std::equal(ft_cit1, ft_cend0, std_cit1, __cmp<char, float>)) ||
+				(!ft_map1.empty() && !std::equal(ft_cit0, ft_cend1, std_cit0, __cmp<char, float>)))
 				return KO;
 		}
 		// Swapping non-empty | non-empty
@@ -2724,8 +2725,8 @@ inline static int	__test_function_swap_non_member(void)
 			ft_cend1 = ft_map1.end();
 
 			if (ft_map0.size() != std_map0.size() || ft_map1.size() != std_map1.size() ||
-				!std::equal(ft_cit0, ft_cend1, std_cit0, __cmp<char, float>) ||
-				!std::equal(ft_cit1, ft_cend0, std_cit1, __cmp<char, float>))
+				(!ft_map0.empty() && !std::equal(ft_cit1, ft_cend0, std_cit1, __cmp<char, float>)) ||
+				(!ft_map1.empty() && !std::equal(ft_cit0, ft_cend1, std_cit0, __cmp<char, float>)))
 				return KO;
 		}
 	}
@@ -3765,7 +3766,7 @@ inline static int	__test_operator_greater_or_equivalent(void)
 
 int	test_map(void)
 {
-	t_fct const	tests[] = {
+	t_fct const				tests[] = {
 		__test_constructor_default,
 		__test_constructor_range,
 		__test_constructor_copy,
@@ -3826,16 +3827,22 @@ int	test_map(void)
 		__test_operator_greater_or_equivalent,
 		NULL
 	};
-	t_uint			koCount;
-	t_uint			idx;
-	
+	t_uint					koCount;
+	t_uint					idx;
+	struct timespec const	delay = {SLEEP_TIME_SEC, SLEEP_TIME_NANOSEC};
+
+	nanosleep(&delay, NULL);
+
 	std::cerr << LIGHT_BLUE_FG;
 	std::cout << "###################################################" << '\n';
 	std::cout << "##                      MAP                      ##" << '\n';
 	std::cout << "###################################################" << '\n';
 	std::cerr << RESET;
+
 	for (koCount = 0U, idx = 0U ; tests[idx] ; ++idx)
 	{
+		nanosleep(&delay, NULL);
+
 		switch (tests[idx]())
 		{
 			case IMP_OK:
