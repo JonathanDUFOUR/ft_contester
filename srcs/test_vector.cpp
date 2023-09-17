@@ -6,7 +6,7 @@
 /*   By: jodufour <jodufour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/28 18:36:04 by jodufour          #+#    #+#             */
-/*   Updated: 2022/11/13 19:21:34 by jodufour         ###   ########.fr       */
+/*   Updated: 2023/09/17 20:59:29 by jodufour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 #include <iterator>
 #include <vector>
 
+#pragma region [test constructor (default)]
 inline static int	__test_constructor_default(void)
 {
 	int	ret;
@@ -60,7 +61,9 @@ inline static int	__test_constructor_default(void)
 	}
 	return ret;
 }
+#pragma endregion
 
+#pragma region [test constructor (fill)]
 inline static int	__test_constructor_fill(void)
 {
 	int	ret;
@@ -69,186 +72,192 @@ inline static int	__test_constructor_fill(void)
 	ret = IMP_OK;
 	try
 	{
-		// Trivially copyable
+		#pragma region [trivially copyable]
+		#pragma region [null size & default value]
 		{
-			// Null size | default value
-			{
-				g_start = clock();
-				ft::vector<char> const	ft_vec(0LU);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
+			g_start = clock();
+			ft::vector<char> const	ft_vec(0LU);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
 
-				g_start = clock();
-				std::vector<char> const	std_vec(0LU);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
+			g_start = clock();
+			std::vector<char> const	std_vec(0LU);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
 
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-				if (sizeof(ft_vec) != sizeof(std_vec) || memcmp(&ft_vec, &std_vec, sizeof(ft_vec)))
-					ret = ISO_OK;
-			}
-			// Null size | defined value
-			{
-				g_start = clock();
-				ft::vector<char> const	ft_vec(0LU, 'A');
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
-
-				g_start = clock();
-				std::vector<char> const	std_vec(0LU, 'A');
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
-
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-				if (sizeof(ft_vec) != sizeof(std_vec))
-					ret = ISO_OK;
-			}
-			// Non-null size | default value
-			{
-				g_start = clock();
-				ft::vector<char> const	ft_vec(21LU);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
-
-				g_start = clock();
-				std::vector<char> const	std_vec(21LU);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
-
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-				if (sizeof(ft_vec) != sizeof(std_vec))
-					ret = ISO_OK;
-			}
-			// Non-null size | defined value
-			{
-				g_start = clock();
-				ft::vector<char> const	ft_vec(42LU, 42);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
-
-				g_start = clock();
-				std::vector<char> const	std_vec(42LU, 42);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
-
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-				if (sizeof(ft_vec) != sizeof(std_vec))
-					ret = ISO_OK;
-			}
+			if (sizeof(ft_vec) != sizeof(std_vec) || memcmp(&ft_vec, &std_vec, sizeof(ft_vec)))
+				ret = ISO_OK;
 		}
-		// Trivially copyable
-		// Ambiguous
+		#pragma endregion
+		#pragma region [null size & defined value]
 		{
-			// Null size | defined value
-			{
-				g_start = clock();
-				ft::vector<char> const	ft_vec(static_cast<char>(0LU), 'A');
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
+			g_start = clock();
+			ft::vector<char> const	ft_vec(0LU, 'A');
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
 
-				g_start = clock();
-				std::vector<char> const	std_vec(static_cast<char>(0LU), 'A');
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
+			g_start = clock();
+			std::vector<char> const	std_vec(0LU, 'A');
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
 
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-				if (sizeof(ft_vec) != sizeof(std_vec))
-					ret = ISO_OK;
-			}
-			// Non-null size | defined value
-			{
-				g_start = clock();
-				ft::vector<char> const	ft_vec(static_cast<char>(42LU), 42);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
-
-				g_start = clock();
-				std::vector<char> const	std_vec(static_cast<char>(42LU), 42);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
-
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-				if (sizeof(ft_vec) != sizeof(std_vec))
-					ret = ISO_OK;
-			}
+			if (sizeof(ft_vec) != sizeof(std_vec))
+				ret = ISO_OK;
 		}
-		// Non-trivial copy required
+		#pragma endregion
+		#pragma region [non-null size & default value]
 		{
-			// Null size | default value
-			{
-				g_start = clock();
-				ft::vector<std::string> const	ft_vec(0LU);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
+			g_start = clock();
+			ft::vector<char> const	ft_vec(21LU);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
 
-				g_start = clock();
-				std::vector<std::string> const	std_vec(0LU);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
+			g_start = clock();
+			std::vector<char> const	std_vec(21LU);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
 
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-				if (sizeof(ft_vec) != sizeof(std_vec) || memcmp(&ft_vec, &std_vec, sizeof(ft_vec)))
-					ret = ISO_OK;
-			}
-			// Non-null size | default value
-			{
-				g_start = clock();
-				ft::vector<std::string> const	ft_vec(21LU);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
-
-				g_start = clock();
-				std::vector<std::string> const	std_vec(21LU);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
-
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-				if (sizeof(ft_vec) != sizeof(std_vec))
-					ret = ISO_OK;
-			}
-			// Null size | defined value
-			{
-				g_start = clock();
-				ft::vector<std::string> const	ft_vec(0LU, std::string("pouic"));
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
-
-				g_start = clock();
-				std::vector<std::string> const	std_vec(0LU, std::string("pouic"));
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
-
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-				if (sizeof(ft_vec) != sizeof(std_vec))
-					ret = ISO_OK;
-			}
-			// Non-null size | defined value
-			{
-				g_start = clock();
-				ft::vector<std::string> const	ft_vec(42LU, std::string("Hello World !"));
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
-
-				g_start = clock();
-				std::vector<std::string> const	std_vec(42LU, std::string("Hello World !"));
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
-
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-				if (sizeof(ft_vec) != sizeof(std_vec))
-					ret = ISO_OK;
-			}
+			if (sizeof(ft_vec) != sizeof(std_vec))
+				ret = ISO_OK;
 		}
+		#pragma endregion
+		#pragma region [non-null size & defined value]
+		{
+			g_start = clock();
+			ft::vector<char> const	ft_vec(42LU, 42);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std::vector<char> const	std_vec(42LU, 42);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (sizeof(ft_vec) != sizeof(std_vec))
+				ret = ISO_OK;
+		}
+		#pragma endregion
+		#pragma endregion
+		#pragma region [trivially copyable & ambiguous]
+		#pragma region [null size & defined value]
+		{
+			g_start = clock();
+			ft::vector<char> const	ft_vec(static_cast<char>(0LU), 'A');
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std::vector<char> const	std_vec(static_cast<char>(0LU), 'A');
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (sizeof(ft_vec) != sizeof(std_vec))
+				ret = ISO_OK;
+		}
+		#pragma endregion
+		#pragma region [non-null size & defined value]
+		{
+			g_start = clock();
+			ft::vector<char> const	ft_vec(static_cast<char>(42LU), 42);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std::vector<char> const	std_vec(static_cast<char>(42LU), 42);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (sizeof(ft_vec) != sizeof(std_vec))
+				ret = ISO_OK;
+		}
+		#pragma endregion
+		#pragma endregion
+		#pragma region [non-trivial copy required]
+		#pragma region [null size & default value]
+		{
+			g_start = clock();
+			ft::vector<std::string> const	ft_vec(0LU);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std::vector<std::string> const	std_vec(0LU);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (sizeof(ft_vec) != sizeof(std_vec) || memcmp(&ft_vec, &std_vec, sizeof(ft_vec)))
+				ret = ISO_OK;
+		}
+		#pragma endregion
+		#pragma region [non-null size & default value]
+		{
+			g_start = clock();
+			ft::vector<std::string> const	ft_vec(21LU);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std::vector<std::string> const	std_vec(21LU);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (sizeof(ft_vec) != sizeof(std_vec))
+				ret = ISO_OK;
+		}
+		#pragma endregion
+		#pragma region [null size & defined value]
+		{
+			g_start = clock();
+			ft::vector<std::string> const	ft_vec(0LU, std::string("pouic"));
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std::vector<std::string> const	std_vec(0LU, std::string("pouic"));
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (sizeof(ft_vec) != sizeof(std_vec))
+				ret = ISO_OK;
+		}
+		#pragma endregion
+		#pragma region [non-null size & defined value]
+		{
+			g_start = clock();
+			ft::vector<std::string> const	ft_vec(42LU, std::string("Hello World !"));
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std::vector<std::string> const	std_vec(42LU, std::string("Hello World !"));
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (sizeof(ft_vec) != sizeof(std_vec))
+				ret = ISO_OK;
+		}
+		#pragma endregion
+		#pragma endregion
 	}
 	catch (std::exception const &e)
 	{
@@ -257,7 +266,9 @@ inline static int	__test_constructor_fill(void)
 	}
 	return ret;
 }
+#pragma endregion
 
+#pragma region [test constructor (range)]
 inline static int	__test_constructor_range(void)
 {
 	int	ret;
@@ -266,167 +277,89 @@ inline static int	__test_constructor_range(void)
 	ret = IMP_OK;
 	try
 	{
-		// Trivially copyable
+		#pragma region [trivially copyable]
+		#pragma region [range of input_iterator_restrictor]
 		{
-			// Range of input_iterator_restrictor
-			{
-				tester::input_iterator_restrictor<t_huint const *> const	it0(&g_huint[0]);
-				tester::input_iterator_restrictor<t_huint const *> const	it1(&g_huint[0]);
+			tester::input_iterator_restrictor<t_huint const *> const	it0(&g_huint[0]);
+			tester::input_iterator_restrictor<t_huint const *> const	it1(&g_huint[0]);
 
-				g_start = clock();
-				ft::vector<t_huint> const									ft_vec(it0, it1);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
+			g_start = clock();
+			ft::vector<t_huint> const									ft_vec(it0, it1);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
 
-				g_start = clock();
-				std::vector<t_huint> const									std_vec(it0, it1);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
+			g_start = clock();
+			std::vector<t_huint> const									std_vec(it0, it1);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
 
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-				if (sizeof(ft_vec) != sizeof(std_vec))
-					ret = ISO_OK;
-			}
-			// Range of forward_iterator_restrictor
-			{
-				tester::forward_iterator_restrictor<void const *const *> const	it;
-
-				g_start = clock();
-				ft::vector<void const *> const									ft_vec(it, it);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
-
-				g_start = clock();
-				std::vector<void const *> const									std_vec(it, it);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
-
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-				if (sizeof(ft_vec) != sizeof(std_vec))
-					ret = ISO_OK;
-			}
-			// Range of random_access_iterator_restrictor
-			{
-				tester::random_access_iterator_restrictor<t_huint const *> const	it0(&g_huint[0]);
-				tester::random_access_iterator_restrictor<t_huint const *> const	it1(&g_huint[g_huint_size]);
-
-				g_start = clock();
-				ft::vector<t_huint> const											ft_vec(it0, it1);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
-
-				g_start = clock();
-				std::vector<t_huint> const											std_vec(it0, it1);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
-
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-				if (sizeof(ft_vec) != sizeof(std_vec))
-					ret = ISO_OK;
-			}
-			// Range of char const *
-			{
-				g_start = clock();
-				ft::vector<char> const	ft_vec(g_char, &g_char[g_char_size]);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
-
-				g_start = clock();
-				std::vector<char> const	std_vec(g_char, &g_char[g_char_size]);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
-
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-				if (sizeof(ft_vec) != sizeof(std_vec))
-					ret = ISO_OK;
-			}
+			if (sizeof(ft_vec) != sizeof(std_vec))
+				ret = ISO_OK;
 		}
-		// Non-trivial copy required
+		#pragma endregion
+		#pragma region [range of forward_iterator_restrictor]
 		{
-			// Range of input_iterator_restrictor
-			{
-				tester::input_iterator_restrictor<std::string const *> const	it0(&g_string[0]);
-				tester::input_iterator_restrictor<std::string const *> const	it1(&g_string[0]);
+			tester::forward_iterator_restrictor<void const *const *> const	it;
 
-				g_start = clock();
-				ft::vector<std::string> const									ft_vec(it0, it1);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
+			g_start = clock();
+			ft::vector<void const *> const									ft_vec(it, it);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
 
-				g_start = clock();
-				std::vector<std::string> const									std_vec(it0, it1);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
+			g_start = clock();
+			std::vector<void const *> const									std_vec(it, it);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
 
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-				if (sizeof(ft_vec) != sizeof(std_vec))
-					ret = ISO_OK;
-			}
-			// Range of forward_iterator_restrictor
-			{
-				tester::forward_iterator_restrictor<std::string const *> const	it0;
-				tester::forward_iterator_restrictor<std::string const *> const	it1;
-
-				g_start = clock();
-				ft::vector<std::string> const									ft_vec(it0, it1);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
-
-				g_start = clock();
-				std::vector<std::string> const									std_vec(it0, it1);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
-
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-				if (sizeof(ft_vec) != sizeof(std_vec))
-					ret = ISO_OK;
-			}
-			// Range of random_access_iterator_restrictor
-			{
-				tester::random_access_iterator_restrictor<std::string const *> const	it0(&g_string[0]);
-				tester::random_access_iterator_restrictor<std::string const *> const	it1(&g_string[g_string_size]);
-
-				g_start = clock();
-				ft::vector<std::string> const											ft_vec(it0, it1);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
-
-				g_start = clock();
-				std::vector<std::string> const											std_vec(it0, it1);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
-
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-				if (sizeof(ft_vec) != sizeof(std_vec))
-					ret = ISO_OK;
-			}
-			// Range of std::string const *
-			{
-				g_start = clock();
-				ft::vector<std::string> const	ft_vec(&g_string[0], &g_string[g_string_size]);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
-
-				g_start = clock();
-				std::vector<std::string> const	std_vec(&g_string[0], &g_string[g_string_size]);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
-
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-				if (sizeof(ft_vec) != sizeof(std_vec))
-					ret = ISO_OK;
-			}
+			if (sizeof(ft_vec) != sizeof(std_vec))
+				ret = ISO_OK;
 		}
-		// Trivially copyable
-		// Force naive iteration along the range
+		#pragma endregion
+		#pragma region [range of random_access_iterator_restrictor]
+		{
+			tester::random_access_iterator_restrictor<t_huint const *> const	it0(&g_huint[0]);
+			tester::random_access_iterator_restrictor<t_huint const *> const	it1(&g_huint[g_huint_size]);
+
+			g_start = clock();
+			ft::vector<t_huint> const											ft_vec(it0, it1);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std::vector<t_huint> const											std_vec(it0, it1);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (sizeof(ft_vec) != sizeof(std_vec))
+				ret = ISO_OK;
+		}
+		#pragma endregion
+		#pragma region [range of char const *]
+		{
+			g_start = clock();
+			ft::vector<char> const	ft_vec(g_char, &g_char[g_char_size]);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std::vector<char> const	std_vec(g_char, &g_char[g_char_size]);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (sizeof(ft_vec) != sizeof(std_vec))
+				ret = ISO_OK;
+		}
+		#pragma endregion
+		#pragma endregion
+		#pragma region [trivially copyable & force naive iteration along the range]
 		{
 			std::ifstream						ifs0(g_file[g_file_size - 1]);
 			std::ifstream						ifs1(g_file[g_file_size - 1]);
@@ -449,6 +382,90 @@ inline static int	__test_constructor_range(void)
 			if (sizeof(ft_vec) != sizeof(std_vec))
 				ret = ISO_OK;
 		}
+		#pragma endregion
+		#pragma region [non-trivial copy required]
+		#pragma region [range of input_iterator_restrictor]
+		{
+			tester::input_iterator_restrictor<std::string const *> const	it0(&g_string[0]);
+			tester::input_iterator_restrictor<std::string const *> const	it1(&g_string[0]);
+
+			g_start = clock();
+			ft::vector<std::string> const									ft_vec(it0, it1);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std::vector<std::string> const									std_vec(it0, it1);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (sizeof(ft_vec) != sizeof(std_vec))
+				ret = ISO_OK;
+		}
+		#pragma endregion
+		#pragma region [range of forward_iterator_restrictor]
+		{
+			tester::forward_iterator_restrictor<std::string const *> const	it0;
+			tester::forward_iterator_restrictor<std::string const *> const	it1;
+
+			g_start = clock();
+			ft::vector<std::string> const									ft_vec(it0, it1);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std::vector<std::string> const									std_vec(it0, it1);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (sizeof(ft_vec) != sizeof(std_vec))
+				ret = ISO_OK;
+		}
+		#pragma endregion
+		#pragma region [range of random_access_iterator_restrictor]
+		{
+			tester::random_access_iterator_restrictor<std::string const *> const	it0(&g_string[0]);
+			tester::random_access_iterator_restrictor<std::string const *> const	it1(&g_string[g_string_size]);
+
+			g_start = clock();
+			ft::vector<std::string> const											ft_vec(it0, it1);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std::vector<std::string> const											std_vec(it0, it1);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (sizeof(ft_vec) != sizeof(std_vec))
+				ret = ISO_OK;
+		}
+		#pragma endregion
+		#pragma region [range of std::string const *]
+		{
+			g_start = clock();
+			ft::vector<std::string> const	ft_vec(&g_string[0], &g_string[g_string_size]);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std::vector<std::string> const	std_vec(&g_string[0], &g_string[g_string_size]);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (sizeof(ft_vec) != sizeof(std_vec))
+				ret = ISO_OK;
+		}
+		#pragma endregion
+		#pragma endregion
 	}
 	catch (std::exception const &e)
 	{
@@ -457,7 +474,9 @@ inline static int	__test_constructor_range(void)
 	}
 	return ret;
 }
+#pragma endregion
 
+#pragma region [test constructor (copy)]
 inline static int	__test_constructor_copy(void)
 {
 	int	ret;
@@ -466,96 +485,98 @@ inline static int	__test_constructor_copy(void)
 	ret = IMP_OK;
 	try
 	{
-		// Trivially copyable
+		#pragma region [trivially copyable]
+		#pragma region [from default]
 		{
-			// Default vector
-			{
-				ft::vector<t_huint> const	ft_vec0;
-				std::vector<t_huint> const	std_vec0;
+			ft::vector<t_huint> const	ft_vec0;
+			std::vector<t_huint> const	std_vec0;
 
-				g_start = clock();
-				ft::vector<t_huint> const	ft_vec1(ft_vec0);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
+			g_start = clock();
+			ft::vector<t_huint> const	ft_vec1(ft_vec0);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
 
-				g_start = clock();
-				std::vector<t_huint> const	std_vec1(std_vec0);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
+			g_start = clock();
+			std::vector<t_huint> const	std_vec1(std_vec0);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
 
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-				if (sizeof(ft_vec1) != sizeof(std_vec1))
-					ret = ISO_OK;
-			}
-			// Filled vector
-			{
-				tester::forward_iterator_restrictor<t_huint const *> const	it0(&g_huint[0]);
-				tester::forward_iterator_restrictor<t_huint const *> const	it1(&g_huint[g_huint_size]);
-				ft::vector<t_huint> const									ft_vec0(it0, it1);
-				std::vector<t_huint> const									std_vec0(it0, it1);
-
-				g_start = clock();
-				ft::vector<t_huint> const									ft_vec1(ft_vec0);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
-
-				g_start = clock();
-				std::vector<t_huint> const									std_vec1(std_vec0);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
-
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-				if (sizeof(ft_vec1) != sizeof(std_vec1))
-					ret = ISO_OK;
-			}
+			if (sizeof(ft_vec1) != sizeof(std_vec1))
+				ret = ISO_OK;
 		}
-		// Non-trivial copy required
+		#pragma endregion
+		#pragma region [from filled]
 		{
-			// Default vector
-			{
-				ft::vector<std::string> const	ft_vec0;
-				std::vector<std::string> const	std_vec0;
+			tester::forward_iterator_restrictor<t_huint const *> const	it0(&g_huint[0]);
+			tester::forward_iterator_restrictor<t_huint const *> const	it1(&g_huint[g_huint_size]);
+			ft::vector<t_huint> const									ft_vec0(it0, it1);
+			std::vector<t_huint> const									std_vec0(it0, it1);
 
-				g_start = clock();
-				ft::vector<std::string> const	ft_vec1(ft_vec0);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
+			g_start = clock();
+			ft::vector<t_huint> const									ft_vec1(ft_vec0);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
 
-				g_start = clock();
-				std::vector<std::string> const	std_vec1(std_vec0);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
+			g_start = clock();
+			std::vector<t_huint> const									std_vec1(std_vec0);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
 
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-				if (sizeof(ft_vec1) != sizeof(std_vec1))
-					ret = ISO_OK;
-			}
-			// Filled vector
-			{
-				tester::forward_iterator_restrictor<std::string const *> const	it0(&g_string[0]);
-				tester::forward_iterator_restrictor<std::string const *> const	it1(&g_string[g_string_size]);
-				ft::vector<std::string> const									ft_vec0(it0, it1);
-				std::vector<std::string> const									std_vec0(it0, it1);
-
-				g_start = clock();
-				ft::vector<std::string> const									ft_vec1(ft_vec0);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
-
-				g_start = clock();
-				std::vector<std::string> const									std_vec1(std_vec0);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
-
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-				if (sizeof(ft_vec1) != sizeof(std_vec1))
-					ret = ISO_OK;
-			}
+			if (sizeof(ft_vec1) != sizeof(std_vec1))
+				ret = ISO_OK;
 		}
+		#pragma endregion
+		#pragma endregion
+		#pragma region [non-trivial copy required]
+		#pragma region [from default]
+		{
+			ft::vector<std::string> const	ft_vec0;
+			std::vector<std::string> const	std_vec0;
+
+			g_start = clock();
+			ft::vector<std::string> const	ft_vec1(ft_vec0);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std::vector<std::string> const	std_vec1(std_vec0);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (sizeof(ft_vec1) != sizeof(std_vec1))
+				ret = ISO_OK;
+		}
+		#pragma endregion
+		#pragma region [from filled]
+		{
+			tester::forward_iterator_restrictor<std::string const *> const	it0(&g_string[0]);
+			tester::forward_iterator_restrictor<std::string const *> const	it1(&g_string[g_string_size]);
+			ft::vector<std::string> const									ft_vec0(it0, it1);
+			std::vector<std::string> const									std_vec0(it0, it1);
+
+			g_start = clock();
+			ft::vector<std::string> const									ft_vec1(ft_vec0);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std::vector<std::string> const									std_vec1(std_vec0);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (sizeof(ft_vec1) != sizeof(std_vec1))
+				ret = ISO_OK;
+		}
+		#pragma endregion
+		#pragma endregion
 	}
 	catch (std::exception const &e)
 	{
@@ -564,7 +585,9 @@ inline static int	__test_constructor_copy(void)
 	}
 	return ret;
 }
+#pragma endregion
 
+#pragma region [test default template type Alloc]
 inline static int	__test_default_template_type_Alloc(void)
 {
 	title(__func__);
@@ -577,7 +600,9 @@ inline static int	__test_default_template_type_Alloc(void)
 
 	return IMP_OK;
 }
+#pragma endregion
 
+#pragma region [test type value_type]
 inline static int	__test_type_value_type(void)
 {
 	title(__func__);
@@ -589,7 +614,9 @@ inline static int	__test_type_value_type(void)
 
 	return IMP_OK;
 }
+#pragma endregion
 
+#pragma region [test type allocator_type]
 inline static int	__test_type_allocator_type(void)
 {
 	title(__func__);
@@ -601,7 +628,9 @@ inline static int	__test_type_allocator_type(void)
 
 	return IMP_OK;
 }
+#pragma endregion
 
+#pragma region [test type reference]
 inline static int	__test_type_reference(void)
 {
 	title(__func__);
@@ -613,7 +642,9 @@ inline static int	__test_type_reference(void)
 
 	return IMP_OK;
 }
+#pragma endregion
 
+#pragma region [test type const_reference]
 inline static int	__test_type_const_reference(void)
 {
 	title(__func__);
@@ -625,7 +656,9 @@ inline static int	__test_type_const_reference(void)
 
 	return IMP_OK;
 }
+#pragma endregion
 
+#pragma region [test type pointer]
 inline static int	__test_type_pointer(void)
 {
 	title(__func__);
@@ -637,7 +670,9 @@ inline static int	__test_type_pointer(void)
 
 	return IMP_OK;
 }
+#pragma endregion
 
+#pragma region [test type const_pointer]
 inline static int	__test_type_const_pointer(void)
 {
 	title(__func__);
@@ -649,8 +684,10 @@ inline static int	__test_type_const_pointer(void)
 
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_function_get_allocator(void)
+#pragma region [test method get_allocator]
+inline static int	__test_method_get_allocator(void)
 {
 	title(__func__);
 	try
@@ -682,8 +719,10 @@ inline static int	__test_function_get_allocator(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_function_max_size(void)
+#pragma region [test method max_size]
+inline static int	__test_method_max_size(void)
 {
 	int	ret;
 
@@ -691,7 +730,7 @@ inline static int	__test_function_max_size(void)
 	ret = IMP_OK;
 	try
 	{
-		// Vector of signed char
+		#pragma region [vector<i8>]
 		{
 			ft::vector<t_hhint> const		ft_vec;
 			std::vector<t_hhint> const		std_vec;
@@ -715,7 +754,8 @@ inline static int	__test_function_max_size(void)
 			if ((ft_ret == ft_vec.get_allocator().max_size()) != (std_ret == std_vec.get_allocator().max_size()))
 				ret = KO;
 		}
-		// Vector of unsigned int
+		#pragma endregion
+		#pragma region [vector<u32>]
 		{
 			ft::vector<t_uint> const		ft_vec;
 			std::vector<t_uint> const		std_vec;
@@ -739,7 +779,8 @@ inline static int	__test_function_max_size(void)
 			if ((ft_ret == ft_vec.get_allocator().max_size()) != (std_ret == std_vec.get_allocator().max_size()))
 				ret = KO;
 		}
-		// Vector of std::pair<long double, long int>
+		#pragma endregion
+		#pragma region [vector<std::pair<f64, i64>>]
 		{
 			ft::vector<std::pair<long double, t_lint> > const		ft_vec;
 			std::vector<std::pair<long double, t_lint> > const		std_vec;
@@ -763,6 +804,7 @@ inline static int	__test_function_max_size(void)
 			if ((ft_ret == ft_vec.get_allocator().max_size()) != (std_ret == std_vec.get_allocator().max_size()))
 				ret = KO;
 		}
+		#pragma endregion
 	}
 	catch (std::exception const &e)
 	{
@@ -771,8 +813,10 @@ inline static int	__test_function_max_size(void)
 	}
 	return ret;
 }
+#pragma endregion
 
-inline static int	__test_function_capacity(void)
+#pragma region [test method capacity]
+inline static int	__test_method_capacity(void)
 {
 	int		ret;
 	size_t	n;
@@ -813,8 +857,10 @@ inline static int	__test_function_capacity(void)
 	}
 	return ret;
 }
+#pragma endregion
 
-inline static int	__test_function_size(void)
+#pragma region [test method size]
+inline static int	__test_method_size(void)
 {
 	size_t	n;
 
@@ -851,8 +897,10 @@ inline static int	__test_function_size(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_function_empty(void)
+#pragma region [test method empty]
+inline static int	__test_method_empty(void)
 {
 	size_t	n;
 
@@ -889,8 +937,10 @@ inline static int	__test_function_empty(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_function_begin_constant(void)
+#pragma region [test method begin (constant)]
+inline static int	__test_method_begin_constant(void)
 {
 	t_uint	idx;
 
@@ -933,8 +983,10 @@ inline static int	__test_function_begin_constant(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_function_begin_mutable(void)
+#pragma region [test method begin (mutable)]
+inline static int	__test_method_begin_mutable(void)
 {
 	t_uint	idx;
 
@@ -977,8 +1029,10 @@ inline static int	__test_function_begin_mutable(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_function_end_constant(void)
+#pragma region [test method end (constant)]
+inline static int	__test_method_end_constant(void)
 {
 	t_uint	idx;
 
@@ -1021,8 +1075,10 @@ inline static int	__test_function_end_constant(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_function_end_mutable(void)
+#pragma region [test method end (mutable)]
+inline static int	__test_method_end_mutable(void)
 {
 	t_uint	idx;
 
@@ -1065,8 +1121,10 @@ inline static int	__test_function_end_mutable(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_function_rbegin_constant(void)
+#pragma region [test method rbegin (constant)]
+inline static int	__test_method_rbegin_constant(void)
 {
 	t_uint	idx;
 
@@ -1109,8 +1167,10 @@ inline static int	__test_function_rbegin_constant(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_function_rbegin_mutable(void)
+#pragma region [test method rbegin (mutable)]
+inline static int	__test_method_rbegin_mutable(void)
 {
 	t_uint	idx;
 
@@ -1153,8 +1213,10 @@ inline static int	__test_function_rbegin_mutable(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_function_rend_constant(void)
+#pragma region [test method rend (constant)]
+inline static int	__test_method_rend_constant(void)
 {
 	t_uint	idx;
 
@@ -1197,8 +1259,10 @@ inline static int	__test_function_rend_constant(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_function_rend_mutable(void)
+#pragma region [test method rend (mutable)]
+inline static int	__test_method_rend_mutable(void)
 {
 	t_uint	idx;
 
@@ -1241,7 +1305,9 @@ inline static int	__test_function_rend_mutable(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
+#pragma region [test type iterator]
 inline static int	__test_type_iterator(void)
 {
 	int	ret;
@@ -1286,7 +1352,9 @@ inline static int	__test_type_iterator(void)
 	}
 	return ret;
 }
+#pragma endregion
 
+#pragma region [test type const_iterator]
 inline static int	__test_type_const_iterator(void)
 {
 	int	ret;
@@ -1330,7 +1398,9 @@ inline static int	__test_type_const_iterator(void)
 	}
 	return ret;
 }
+#pragma endregion
 
+#pragma region [test type reverse_iterator]
 inline static int	__test_type_reverse_iterator(void)
 {
 	int	ret;
@@ -1375,7 +1445,9 @@ inline static int	__test_type_reverse_iterator(void)
 	}
 	return ret;
 }
+#pragma endregion
 
+#pragma region [test type const_reverse_iterator]
 inline static int	__test_type_const_reverse_iterator(void)
 {
 	int	ret;
@@ -1415,8 +1487,10 @@ inline static int	__test_type_const_reverse_iterator(void)
 	}
 	return ret;
 }
+#pragma endregion
 
-inline static int	__test_function_front_constant(void)
+#pragma region [test method front (constant)]
+inline static int	__test_method_front_constant(void)
 {
 	t_uint	idx;
 
@@ -1451,8 +1525,10 @@ inline static int	__test_function_front_constant(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_function_front_mutable(void)
+#pragma region [test method front (mutable)]
+inline static int	__test_method_front_mutable(void)
 {
 	t_uint	idx;
 
@@ -1487,8 +1563,10 @@ inline static int	__test_function_front_mutable(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_function_back_constant(void)
+#pragma region [test method back (constant)]
+inline static int	__test_method_back_constant(void)
 {
 	t_uint	idx;
 
@@ -1523,8 +1601,10 @@ inline static int	__test_function_back_constant(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_function_back_mutable(void)
+#pragma region [test method back (mutable)]
+inline static int	__test_method_back_mutable(void)
 {
 	t_uint	idx;
 
@@ -1559,8 +1639,10 @@ inline static int	__test_function_back_mutable(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_function_at_constant(void)
+#pragma region [test method at (constant)]
+inline static int	__test_method_at_constant(void)
 {
 	t_uint	idx;
 
@@ -1570,39 +1652,37 @@ inline static int	__test_function_at_constant(void)
 		ft::vector<int> const	ft_vec(&g_int[0], &g_int[g_int_size]);
 		std::vector<int> const	std_vec(&g_int[0], &g_int[g_int_size]);
 
-		// Normal usage
+		#pragma region [within bounds]
+		for (idx = 0U ; idx < g_int_size ; ++idx)
 		{
-			for (idx = 0U ; idx < g_int_size ; ++idx)
-			{
-				g_start = clock();
-				int const &ft_ret = ft_vec.at(idx);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
+			g_start = clock();
+			int const &ft_ret = ft_vec.at(idx);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
 
-				g_start = clock();
-				int const &std_ret = std_vec.at(idx);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
+			g_start = clock();
+			int const &std_ret = std_vec.at(idx);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
 
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-				if (ft_ret != std_ret)
-					return KO;
-			}
+			if (ft_ret != std_ret)
+				return KO;
 		}
-		// Overlimits usage
+		#pragma endregion
+		#pragma region [out of bounds]
+		try
 		{
-			try
-			{
-				ft_vec.at(42LU);
-			}
-			catch (std::out_of_range const &e)
-			{
-				goto constant_at_overlimits_usage_ok;
-			}
-			return KO;
-			constant_at_overlimits_usage_ok:;
+			ft_vec.at(42LU);
 		}
+		catch (std::out_of_range const &e)
+		{
+			goto method_at_constant_out_of_bounds_ok;
+		}
+		return KO;
+method_at_constant_out_of_bounds_ok:;
+		#pragma endregion
 	}
 	catch (std::exception const &e)
 	{
@@ -1611,8 +1691,10 @@ inline static int	__test_function_at_constant(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_function_at_mutable(void)
+#pragma region [test method at (mutable)]
+inline static int	__test_method_at_mutable(void)
 {
 	t_uint	idx;
 
@@ -1622,39 +1704,37 @@ inline static int	__test_function_at_mutable(void)
 		ft::vector<int>		ft_vec(&g_int[0], &g_int[g_int_size]);
 		std::vector<int>	std_vec(&g_int[0], &g_int[g_int_size]);
 
-		// Normal usage
+		#pragma region [within bounds]
+		for (idx = 0U ; idx < g_int_size ; ++idx)
 		{
-			for (idx = 0U ; idx < g_int_size ; ++idx)
-			{
-				g_start = clock();
-				int &ft_ret = ft_vec.at(idx);
-				g_ft_duration = clock() - g_start;
-				g_ft_duration += !g_ft_duration;
+			g_start = clock();
+			int &ft_ret = ft_vec.at(idx);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
 
-				g_start = clock();
-				int &std_ret = std_vec.at(idx);
-				g_std_duration = clock() - g_start;
-				g_std_duration += !g_std_duration;
+			g_start = clock();
+			int &std_ret = std_vec.at(idx);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
 
-				g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
 
-				if (ft_ret != std_ret)
-					return KO;
-			}
+			if (ft_ret != std_ret)
+				return KO;
 		}
-		// Overlimits usage
+		#pragma endregion
+		#pragma region [out of bounds]
+		try
 		{
-			try
-			{
-				++ft_vec.at(42LU);
-			}
-			catch (std::out_of_range const &e)
-			{
-				goto mutable_at_overlimits_usage_ok;
-			}
-			return KO;
-			mutable_at_overlimits_usage_ok:;
+			++ft_vec.at(42LU);
 		}
+		catch (std::out_of_range const &e)
+		{
+			goto method_at_constant_out_of_bounds_ok;
+		}
+		return KO;
+method_at_constant_out_of_bounds_ok:;
+		#pragma endregion
 	}
 	catch (std::exception const &e)
 	{
@@ -1663,8 +1743,10 @@ inline static int	__test_function_at_mutable(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_function_insert_fill(void)
+#pragma region [test method insert (fill)]
+inline static int	__test_method_insert_fill(void)
 {
 	int		ret;
 	t_uint	idx;
@@ -1673,7 +1755,7 @@ inline static int	__test_function_insert_fill(void)
 	ret = IMP_OK;
 	try
 	{
-		// Trivially copyable
+		#pragma region [trivially copyable]
 		{
 			ft::vector<float>	ft_vec;
 			std::vector<float>	std_vec;
@@ -1698,8 +1780,8 @@ inline static int	__test_function_insert_fill(void)
 					return KO;
 			}
 		}
-		// Trivially copyable
-		// Ambiguous
+		#pragma endregion
+		#pragma region [trivially copyable & ambiguous]
 		{
 			ft::vector<int>		ft_vec;
 			std::vector<int>	std_vec;
@@ -1724,7 +1806,8 @@ inline static int	__test_function_insert_fill(void)
 					return KO;
 			}
 		}
-		// Non-trivial copy required
+		#pragma endregion
+		#pragma region [non-trivial copy required]
 		{
 			ft::vector<std::string>		ft_vec;
 			std::vector<std::string>	std_vec;
@@ -1749,6 +1832,7 @@ inline static int	__test_function_insert_fill(void)
 					return KO;
 			}
 		}
+		#pragma endregion
 	}
 	catch (std::exception const &e)
 	{
@@ -1757,8 +1841,10 @@ inline static int	__test_function_insert_fill(void)
 	}
 	return ret;
 }
+#pragma endregion
 
-inline static int	__test_function_insert_range(void)
+#pragma region [test method insert (range)]
+inline static int	__test_method_insert_range(void)
 {
 	int		ret;
 	t_uint	idx;
@@ -1767,7 +1853,7 @@ inline static int	__test_function_insert_range(void)
 	ret = IMP_OK;
 	try
 	{
-		// Trivially copyable
+		#pragma region [trivially copyable]
 		{
 			ft::vector<float>	ft_vec;
 			std::vector<float>	std_vec;
@@ -1792,8 +1878,8 @@ inline static int	__test_function_insert_range(void)
 					return KO;
 			}
 		}
-		// Trivially copyable
-		// Force naive iteration along th range
+		#pragma endregion
+		#pragma region [trivially copyable & force naive iteration along the range]
 		{
 			ft::vector<char>	ft_vec;
 			std::vector<char>	std_vec;
@@ -1824,7 +1910,8 @@ inline static int	__test_function_insert_range(void)
 					return KO;
 			}
 		}
-		// Non-trivial copy required
+		#pragma endregion
+		#pragma region [non-trivial copy required]
 		{
 			ft::vector<std::string>		ft_vec;
 			std::vector<std::string>	std_vec;
@@ -1849,6 +1936,7 @@ inline static int	__test_function_insert_range(void)
 					return KO;
 			}
 		}
+		#pragma endregion
 	}
 	catch (std::exception const &e)
 	{
@@ -1857,8 +1945,10 @@ inline static int	__test_function_insert_range(void)
 	}
 	return ret;
 }
+#pragma endregion
 
-inline static int	__test_function_insert_single(void)
+#pragma region [test method insert (single)]
+inline static int	__test_method_insert_single(void)
 {
 	int		ret;
 	t_uint	idx;
@@ -1867,8 +1957,7 @@ inline static int	__test_function_insert_single(void)
 	ret = IMP_OK;
 	try
 	{
-		// Single insertion
-		// Trivially copyable
+		#pragma region [trivially copyable]
 		{
 			ft::vector<float>					ft_vec;
 			std::vector<float>					std_vec;
@@ -1896,8 +1985,8 @@ inline static int	__test_function_insert_single(void)
 					return KO;
 			}
 		}
-		// Single insertion
-		// Non-trivial copy required
+		#pragma endregion
+		#pragma region [non-trivial copy required]
 		{
 			ft::vector<std::string>						ft_vec;
 			std::vector<std::string>					std_vec;
@@ -1925,6 +2014,7 @@ inline static int	__test_function_insert_single(void)
 					return KO;
 			}
 		}
+		#pragma endregion
 	}
 	catch (std::exception const &e)
 	{
@@ -1933,8 +2023,10 @@ inline static int	__test_function_insert_single(void)
 	}
 	return ret;
 }
+#pragma endregion
 
-inline static int	__test_function_erase_range(void)
+#pragma region [test method erase (range)]
+inline static int	__test_method_erase_range(void)
 {
 	int		ret;
 	t_uint	idx;
@@ -1979,8 +2071,10 @@ inline static int	__test_function_erase_range(void)
 	}
 	return ret;
 }
+#pragma endregion
 
-inline static int	__test_function_erase_single(void)
+#pragma region [test method erase (single)]
+inline static int	__test_method_erase_single(void)
 {
 	int		ret;
 	t_uint	idx;
@@ -2025,8 +2119,10 @@ inline static int	__test_function_erase_single(void)
 	}
 	return ret;
 }
+#pragma endregion
 
-inline static int	__test_function_push_back(void)
+#pragma region [test method push_back]
+inline static int	__test_method_push_back(void)
 {
 	int		ret;
 	t_uint	idx;
@@ -2035,7 +2131,7 @@ inline static int	__test_function_push_back(void)
 	ret = IMP_OK;
 	try
 	{
-		// Trivially copyable
+		#pragma region [trivially copyable]
 		{
 			ft::vector<long double>		ft_vec;
 			std::vector<long double>	std_vec;
@@ -2060,7 +2156,8 @@ inline static int	__test_function_push_back(void)
 					return KO;
 			}
 		}
-		// Non-trivial copy required
+		#pragma endregion
+		#pragma region [non-trivial copy required]
 		{
 			ft::vector<std::string>		ft_vec;
 			std::vector<std::string>	std_vec;
@@ -2085,6 +2182,7 @@ inline static int	__test_function_push_back(void)
 					return KO;
 			}
 		}
+		#pragma endregion
 	}
 	catch (std::exception const &e)
 	{
@@ -2093,8 +2191,10 @@ inline static int	__test_function_push_back(void)
 	}
 	return ret;
 }
+#pragma endregion
 
-inline static int	__test_function_pop_back(void)
+#pragma region [test method pop_back]
+inline static int	__test_method_pop_back(void)
 {
 	int		ret;
 	t_uint	idx;
@@ -2133,8 +2233,10 @@ inline static int	__test_function_pop_back(void)
 	}
 	return ret;
 }
+#pragma endregion
 
-inline static int	__test_function_clear(void)
+#pragma region [test method clear]
+inline static int	__test_method_clear(void)
 {
 	int		ret;
 	t_uint	idx;
@@ -2173,8 +2275,10 @@ inline static int	__test_function_clear(void)
 	}
 	return ret;
 }
+#pragma endregion
 
-inline static int	__test_function_assign_fill(void)
+#pragma region [test method assign (fill)]
+inline static int	__test_method_assign_fill(void)
 {
 	int		ret;
 	t_uint	idx;
@@ -2183,7 +2287,7 @@ inline static int	__test_function_assign_fill(void)
 	ret = IMP_OK;
 	try
 	{
-		// Trivially copyable
+		#pragma region [trivially copyable]
 		{
 			ft::vector<double>	ft_vec(7LU, NAN);
 			std::vector<double>	std_vec(7LU, NAN);
@@ -2208,8 +2312,8 @@ inline static int	__test_function_assign_fill(void)
 					return KO;
 			}
 		}
-		// Trivially copyable
-		// Ambiguous
+		#pragma endregion
+		#pragma region [trivially copyable & ambiguous]
 		{
 			ft::vector<t_lint>	ft_vec(7LU, 42L);
 			std::vector<t_lint>	std_vec(7LU, 42L);
@@ -2234,7 +2338,8 @@ inline static int	__test_function_assign_fill(void)
 					return KO;
 			}
 		}
-		// Non-trivial copy required
+		#pragma endregion
+		#pragma region [non-trivial copy required]
 		{
 			ft::vector<std::string>		ft_vec(7LU, std::string("Koala"));
 			std::vector<std::string>	std_vec(7LU, std::string("Koala"));
@@ -2260,6 +2365,7 @@ inline static int	__test_function_assign_fill(void)
 			}
 			
 		}
+		#pragma endregion
 	}
 	catch (std::exception const &e)
 	{
@@ -2268,8 +2374,10 @@ inline static int	__test_function_assign_fill(void)
 	}
 	return ret;
 }
+#pragma endregion
 
-inline static int	__test_function_assign_range(void)
+#pragma region [test method assign (range)]
+inline static int	__test_method_assign_range(void)
 {
 	int		ret;
 	t_uint	idx;
@@ -2278,7 +2386,7 @@ inline static int	__test_function_assign_range(void)
 	ret = IMP_OK;
 	try
 	{
-		// Trivially copyable
+		#pragma region [trivially copyable]
 		{
 			ft::vector<double>	ft_vec(7LU, NAN);
 			std::vector<double>	std_vec(7LU, NAN);
@@ -2303,8 +2411,8 @@ inline static int	__test_function_assign_range(void)
 					return KO;
 			}
 		}
-		// Trivially copyable
-		// Force naive iteration along the range
+		#pragma endregion
+		#pragma region [trivially copyable & force naive iteration along the range]
 		{
 			ft::vector<char>	ft_vec(7LU, '+');
 			std::vector<char>	std_vec(7LU, '+');
@@ -2335,7 +2443,8 @@ inline static int	__test_function_assign_range(void)
 					return KO;
 			}
 		}
-		// Non-trivial copy required
+		#pragma endregion
+		#pragma region [non-trivial copy required]
 		{
 			ft::vector<std::string>		ft_vec(7LU, std::string("Koala"));
 			std::vector<std::string>	std_vec(7LU, std::string("Koala"));
@@ -2360,6 +2469,7 @@ inline static int	__test_function_assign_range(void)
 					return KO;
 			}
 		}
+		#pragma endregion
 	}
 	catch (std::exception const &e)
 	{
@@ -2368,184 +2478,10 @@ inline static int	__test_function_assign_range(void)
 	}
 	return ret;
 }
+#pragma endregion
 
-inline static int	__test_function_swap_member(void)
-{
-	int		ret;
-	t_uint	idx;
-
-	title(__func__);
-	ret = IMP_OK;
-	try
-	{
-		// Trivially copyable
-		{
-			ft::vector<t_uint>	ft_vec0(&g_uint[0], &g_uint[g_uint_size]);
-			std::vector<t_uint>	std_vec0(&g_uint[0], &g_uint[g_uint_size]);
-			ft::vector<t_uint>	ft_vec1;
-			std::vector<t_uint>	std_vec1;
-
-			for (idx = 0U ; idx < g_uint_size * 2 ; ++idx)
-			{
-				ft_vec1.insert(ft_vec1.begin(), g_uint[idx / 2]);
-				std_vec1.insert(std_vec1.begin(), g_uint[idx / 2]);
-			}
-
-			g_start = clock();
-			ft_vec0.swap(ft_vec1);
-			g_ft_duration = clock() - g_start;
-			g_ft_duration += !g_ft_duration;
-
-			g_start = clock();
-			std_vec0.swap(std_vec1);
-			g_std_duration = clock() - g_start;
-			g_std_duration += !g_std_duration;
-
-			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-			if (ft_vec0.capacity() != std_vec0.capacity())
-			{
-				if (ft_vec0.capacity() < ft_vec0.size())
-					return KO;
-				ret = ISO_OK;
-			}
-			if (ft_vec0.size() != std_vec0.size() || !std::equal(ft_vec0.begin(), ft_vec0.end(), std_vec0.begin()) ||
-				ft_vec1.size() != std_vec1.size() || !std::equal(ft_vec1.begin(), ft_vec1.end(), std_vec1.begin()))
-				return KO;
-		}
-		// Non-trivial copy required
-		{
-			ft::vector<std::string>		ft_vec0(&g_string[0], &g_string[g_string_size]);
-			std::vector<std::string>	std_vec0(&g_string[0], &g_string[g_string_size]);
-			ft::vector<std::string>		ft_vec1;
-			std::vector<std::string>	std_vec1;
-
-			for (idx = 0U ; idx < g_string_size * 2 ; ++idx)
-			{
-				ft_vec1.insert(ft_vec1.begin(), g_string[idx / 2]);
-				std_vec1.insert(std_vec1.begin(), g_string[idx / 2]);
-			}
-
-			g_start = clock();
-			ft_vec0.swap(ft_vec1);
-			g_ft_duration = clock() - g_start;
-			g_ft_duration += !g_ft_duration;
-
-			g_start = clock();
-			std_vec0.swap(std_vec1);
-			g_std_duration = clock() - g_start;
-			g_std_duration += !g_std_duration;
-
-			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-			if (ft_vec0.capacity() != std_vec0.capacity())
-			{
-				if (ft_vec0.capacity() < ft_vec0.size())
-					return KO;
-				ret = ISO_OK;
-			}
-			if (ft_vec0.size() != std_vec0.size() || !std::equal(ft_vec0.begin(), ft_vec0.end(), std_vec0.begin()) ||
-				ft_vec1.size() != std_vec1.size() || !std::equal(ft_vec1.begin(), ft_vec1.end(), std_vec1.begin()))
-				return KO;
-		}
-	}
-	catch (std::exception const &e)
-	{
-		std::cerr << "Exception: " << e.what() << '\n';
-		return KO;
-	}
-	return ret;
-}
-
-inline static int	__test_function_swap_non_member(void)
-{
-	int		ret;
-	t_uint	idx;
-
-	title(__func__);
-	ret = IMP_OK;
-	try
-	{
-		// Trivially copyable
-		{
-			ft::vector<t_uint>	ft_vec0(&g_uint[0], &g_uint[g_uint_size]);
-			std::vector<t_uint>	std_vec0(&g_uint[0], &g_uint[g_uint_size]);
-			ft::vector<t_uint>	ft_vec1;
-			std::vector<t_uint>	std_vec1;
-
-			for (idx = 0U ; idx < g_uint_size * 2 ; ++idx)
-			{
-				ft_vec1.insert(ft_vec1.begin(), g_uint[idx / 2]);
-				std_vec1.insert(std_vec1.begin(), g_uint[idx / 2]);
-			}
-
-			g_start = clock();
-			ft::swap(ft_vec0, ft_vec1);
-			g_ft_duration = clock() - g_start;
-			g_ft_duration += !g_ft_duration;
-
-			g_start = clock();
-			std::swap(std_vec0, std_vec1);
-			g_std_duration = clock() - g_start;
-			g_std_duration += !g_std_duration;
-
-			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-			if (ft_vec0.capacity() != std_vec0.capacity())
-			{
-				if (ft_vec0.capacity() < ft_vec0.size())
-					return KO;
-				ret = ISO_OK;
-			}
-			if (ft_vec0.size() != std_vec0.size() || !std::equal(ft_vec0.begin(), ft_vec0.end(), std_vec0.begin()) ||
-				ft_vec1.size() != std_vec1.size() || !std::equal(ft_vec1.begin(), ft_vec1.end(), std_vec1.begin()))
-				return KO;
-		}
-		// Non-trivial copy required
-		{
-			ft::vector<std::string>		ft_vec0(&g_string[0], &g_string[g_string_size]);
-			std::vector<std::string>	std_vec0(&g_string[0], &g_string[g_string_size]);
-			ft::vector<std::string>		ft_vec1;
-			std::vector<std::string>	std_vec1;
-
-			for (idx = 0U ; idx < g_string_size * 2 ; ++idx)
-			{
-				ft_vec1.insert(ft_vec1.begin(), g_string[idx / 2]);
-				std_vec1.insert(std_vec1.begin(), g_string[idx / 2]);
-			}
-
-			g_start = clock();
-			ft::swap(ft_vec0, ft_vec1);
-			g_ft_duration = clock() - g_start;
-			g_ft_duration += !g_ft_duration;
-
-			g_start = clock();
-			std::swap(std_vec0, std_vec1);
-			g_std_duration = clock() - g_start;
-			g_std_duration += !g_std_duration;
-
-			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
-
-			if (ft_vec0.capacity() != std_vec0.capacity())
-			{
-				if (ft_vec0.capacity() < ft_vec0.size())
-					return KO;
-				ret = ISO_OK;
-			}
-			if (ft_vec0.size() != std_vec0.size() || !std::equal(ft_vec0.begin(), ft_vec0.end(), std_vec0.begin()) ||
-				ft_vec1.size() != std_vec1.size() || !std::equal(ft_vec1.begin(), ft_vec1.end(), std_vec1.begin()))
-				return KO;
-		}
-	}
-	catch (std::exception const &e)
-	{
-		std::cerr << "Exception: " << e.what() << '\n';
-		return KO;
-	}
-	return ret;
-}
-
-inline static int	__test_function_reserve(void)
+#pragma region [test method reserve]
+inline static int	__test_method_reserve(void)
 {
 	int		ret;
 	size_t	n;
@@ -2557,7 +2493,7 @@ inline static int	__test_function_reserve(void)
 		ft::vector<t_huint>		ft_vec(&g_huint[0], &g_huint[g_huint_size]);
 		std::vector<t_huint>	std_vec(&g_huint[0], &g_huint[g_huint_size]);
 
-		// Normal usage
+		#pragma region [normal usage]
 		{
 			for (n = 0LU ; n < 100LU ; n += 10LU)
 			{
@@ -2583,7 +2519,8 @@ inline static int	__test_function_reserve(void)
 					return KO;
 			}
 		}
-		// Overlimits usage
+		#pragma endregion
+		#pragma region [overlimits usage]
 		{
 			try
 			{
@@ -2591,10 +2528,10 @@ inline static int	__test_function_reserve(void)
 			}
 			catch (std::length_error const &e)
 			{
-				goto reserve_overlimits_ok;
+				goto method_reserve_overlimits_ok;
 			}
 			return KO;
-			reserve_overlimits_ok:
+method_reserve_overlimits_ok:
 
 			if (ft_vec.capacity() != std_vec.capacity())
 			{
@@ -2605,6 +2542,7 @@ inline static int	__test_function_reserve(void)
 			if (ft_vec.size() != std_vec.size() || !std::equal(ft_vec.begin(), ft_vec.end(), std_vec.begin()))
 				return KO;
 		}
+		#pragma endregion
 	}
 	catch (std::exception const &e)
 	{
@@ -2613,8 +2551,10 @@ inline static int	__test_function_reserve(void)
 	}
 	return ret;
 }
+#pragma endregion
 
-inline static int	__test_function_resize(void)
+#pragma region [test method resize]
+inline static int	__test_method_resize(void)
 {
 	int		ret;
 	size_t	n;
@@ -2680,7 +2620,193 @@ inline static int	__test_function_resize(void)
 	}
 	return ret;
 }
+#pragma endregion
 
+#pragma region [test method swap]
+inline static int	__test_method_swap(void)
+{
+	int		ret;
+	t_uint	idx;
+
+	title(__func__);
+	ret = IMP_OK;
+	try
+	{
+		#pragma region [trivially copyable]
+		{
+			ft::vector<t_uint>	ft_vec0(&g_uint[0], &g_uint[g_uint_size]);
+			std::vector<t_uint>	std_vec0(&g_uint[0], &g_uint[g_uint_size]);
+			ft::vector<t_uint>	ft_vec1;
+			std::vector<t_uint>	std_vec1;
+
+			for (idx = 0U ; idx < g_uint_size * 2 ; ++idx)
+			{
+				ft_vec1.insert(ft_vec1.begin(), g_uint[idx / 2]);
+				std_vec1.insert(std_vec1.begin(), g_uint[idx / 2]);
+			}
+
+			g_start = clock();
+			ft_vec0.swap(ft_vec1);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std_vec0.swap(std_vec1);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (ft_vec0.capacity() != std_vec0.capacity())
+			{
+				if (ft_vec0.capacity() < ft_vec0.size())
+					return KO;
+				ret = ISO_OK;
+			}
+			if (ft_vec0.size() != std_vec0.size() || !std::equal(ft_vec0.begin(), ft_vec0.end(), std_vec0.begin()) ||
+				ft_vec1.size() != std_vec1.size() || !std::equal(ft_vec1.begin(), ft_vec1.end(), std_vec1.begin()))
+				return KO;
+		}
+		#pragma endregion
+		#pragma region [non-trivial copy required]
+		{
+			ft::vector<std::string>		ft_vec0(&g_string[0], &g_string[g_string_size]);
+			std::vector<std::string>	std_vec0(&g_string[0], &g_string[g_string_size]);
+			ft::vector<std::string>		ft_vec1;
+			std::vector<std::string>	std_vec1;
+
+			for (idx = 0U ; idx < g_string_size * 2 ; ++idx)
+			{
+				ft_vec1.insert(ft_vec1.begin(), g_string[idx / 2]);
+				std_vec1.insert(std_vec1.begin(), g_string[idx / 2]);
+			}
+
+			g_start = clock();
+			ft_vec0.swap(ft_vec1);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std_vec0.swap(std_vec1);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (ft_vec0.capacity() != std_vec0.capacity())
+			{
+				if (ft_vec0.capacity() < ft_vec0.size())
+					return KO;
+				ret = ISO_OK;
+			}
+			if (ft_vec0.size() != std_vec0.size() || !std::equal(ft_vec0.begin(), ft_vec0.end(), std_vec0.begin()) ||
+				ft_vec1.size() != std_vec1.size() || !std::equal(ft_vec1.begin(), ft_vec1.end(), std_vec1.begin()))
+				return KO;
+		}
+		#pragma endregion
+	}
+	catch (std::exception const &e)
+	{
+		std::cerr << "Exception: " << e.what() << '\n';
+		return KO;
+	}
+	return ret;
+}
+#pragma endregion
+
+#pragma region [test function swap]
+inline static int	__test_function_swap(void)
+{
+	int		ret;
+	t_uint	idx;
+
+	title(__func__);
+	ret = IMP_OK;
+	try
+	{
+		#pragma region [trivially copyable]
+		{
+			ft::vector<t_uint>	ft_vec0(&g_uint[0], &g_uint[g_uint_size]);
+			std::vector<t_uint>	std_vec0(&g_uint[0], &g_uint[g_uint_size]);
+			ft::vector<t_uint>	ft_vec1;
+			std::vector<t_uint>	std_vec1;
+
+			for (idx = 0U ; idx < g_uint_size * 2 ; ++idx)
+			{
+				ft_vec1.insert(ft_vec1.begin(), g_uint[idx / 2]);
+				std_vec1.insert(std_vec1.begin(), g_uint[idx / 2]);
+			}
+
+			g_start = clock();
+			ft::swap(ft_vec0, ft_vec1);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std::swap(std_vec0, std_vec1);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (ft_vec0.capacity() != std_vec0.capacity())
+			{
+				if (ft_vec0.capacity() < ft_vec0.size())
+					return KO;
+				ret = ISO_OK;
+			}
+			if (ft_vec0.size() != std_vec0.size() || !std::equal(ft_vec0.begin(), ft_vec0.end(), std_vec0.begin()) ||
+				ft_vec1.size() != std_vec1.size() || !std::equal(ft_vec1.begin(), ft_vec1.end(), std_vec1.begin()))
+				return KO;
+		}
+		#pragma endregion
+		#pragma region [non-trivial copy required]
+		{
+			ft::vector<std::string>		ft_vec0(&g_string[0], &g_string[g_string_size]);
+			std::vector<std::string>	std_vec0(&g_string[0], &g_string[g_string_size]);
+			ft::vector<std::string>		ft_vec1;
+			std::vector<std::string>	std_vec1;
+
+			for (idx = 0U ; idx < g_string_size * 2 ; ++idx)
+			{
+				ft_vec1.insert(ft_vec1.begin(), g_string[idx / 2]);
+				std_vec1.insert(std_vec1.begin(), g_string[idx / 2]);
+			}
+
+			g_start = clock();
+			ft::swap(ft_vec0, ft_vec1);
+			g_ft_duration = clock() - g_start;
+			g_ft_duration += !g_ft_duration;
+
+			g_start = clock();
+			std::swap(std_vec0, std_vec1);
+			g_std_duration = clock() - g_start;
+			g_std_duration += !g_std_duration;
+
+			g_ratio.insert(static_cast<float>(g_ft_duration) / static_cast<float>(g_std_duration));
+
+			if (ft_vec0.capacity() != std_vec0.capacity())
+			{
+				if (ft_vec0.capacity() < ft_vec0.size())
+					return KO;
+				ret = ISO_OK;
+			}
+			if (ft_vec0.size() != std_vec0.size() || !std::equal(ft_vec0.begin(), ft_vec0.end(), std_vec0.begin()) ||
+				ft_vec1.size() != std_vec1.size() || !std::equal(ft_vec1.begin(), ft_vec1.end(), std_vec1.begin()))
+				return KO;
+		}
+		#pragma endregion
+	}
+	catch (std::exception const &e)
+	{
+		std::cerr << "Exception: " << e.what() << '\n';
+		return KO;
+	}
+	return ret;
+}
+#pragma endregion
+
+#pragma region [test operator assign]
 inline static int	__test_operator_assign(void)
 {
 	int		ret;
@@ -2690,7 +2816,7 @@ inline static int	__test_operator_assign(void)
 	ret = IMP_OK;
 	try
 	{
-		// Trivially copyable
+		#pragma region [trivially copyable]
 		{
 			ft::vector<double>	ft_vec0(&g_double[0], &g_double[g_double_size]);
 			std::vector<double>	std_vec0(&g_double[0], &g_double[g_double_size]);
@@ -2724,7 +2850,8 @@ inline static int	__test_operator_assign(void)
 			if (ft_vec0.size() != std_vec0.size() || !std::equal(ft_vec0.begin(), ft_vec0.end(), std_vec0.begin()))
 				return KO;
 		}
-		// Non-trivial copy required
+		#pragma endregion
+		#pragma region [non-trivial copy required]
 		{
 			ft::vector<std::string>		ft_vec0(&g_string[0], &g_string[g_string_size]);
 			std::vector<std::string>	std_vec0(&g_string[0], &g_string[g_string_size]);
@@ -2758,6 +2885,7 @@ inline static int	__test_operator_assign(void)
 			if (ft_vec0.size() != std_vec0.size() || !std::equal(ft_vec0.begin(), ft_vec0.end(), std_vec0.begin()))
 				return KO;
 		}
+		#pragma endregion
 	}
 	catch (std::exception const &e)
 	{
@@ -2766,8 +2894,10 @@ inline static int	__test_operator_assign(void)
 	}
 	return ret;
 }
+#pragma endregion
 
-inline static int	__test_operator_access_constant(void)
+#pragma region [test operator subscript (constant)]
+inline static int	__test_operator_subscript_constant(void)
 {
 	t_uint	idx;
 
@@ -2802,8 +2932,10 @@ inline static int	__test_operator_access_constant(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_operator_access_mutable(void)
+#pragma region [test operator subscript (mutable)]
+inline static int	__test_operator_subscript_mutable(void)
 {
 	t_uint	idx;
 
@@ -2838,8 +2970,10 @@ inline static int	__test_operator_access_mutable(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_operator_equivalent(void)
+#pragma region [test operator equal to]
+inline static int	__test_operator_equal_to(void)
 {
 	t_uint	idx;
 
@@ -2899,8 +3033,10 @@ inline static int	__test_operator_equivalent(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_operator_different(void)
+#pragma region [test operator not equal to]
+inline static int	__test_operator_not_equal_to(void)
 {
 	t_uint	idx;
 
@@ -2959,10 +3095,11 @@ inline static int	__test_operator_different(void)
 		return KO;
 	}
 	return IMP_OK;
-
 }
+#pragma endregion
 
-inline static int	__test_operator_lower(void)
+#pragma region [test operator lower than]
+inline static int	__test_operator_lower_than(void)
 {
 	t_uint	idx;
 
@@ -3022,8 +3159,10 @@ inline static int	__test_operator_lower(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_operator_greater(void)
+#pragma region [test operator greater than]
+inline static int	__test_operator_greater_than(void)
 {
 	t_uint	idx;
 
@@ -3083,8 +3222,10 @@ inline static int	__test_operator_greater(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_operator_lower_or_equivalent(void)
+#pragma region [test operator lower than or equal to]
+inline static int	__test_operator_lower_than_or_equal_to(void)
 {
 	t_uint	idx;
 
@@ -3144,8 +3285,10 @@ inline static int	__test_operator_lower_or_equivalent(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
-inline static int	__test_operator_greater_or_equivalent(void)
+#pragma region [test operator greater than or equal to]
+inline static int	__test_operator_greater_than_or_equal_to(void)
 {
 	t_uint	idx;
 
@@ -3205,10 +3348,12 @@ inline static int	__test_operator_greater_or_equivalent(void)
 	}
 	return IMP_OK;
 }
+#pragma endregion
 
 int	test_vector(void)
 {
 	t_fct const				tests[] = {
+		#pragma region [tests]
 		__test_constructor_default,
 		__test_constructor_fill,
 		__test_constructor_range,
@@ -3220,53 +3365,54 @@ int	test_vector(void)
 		__test_type_const_reference,
 		__test_type_pointer,
 		__test_type_const_pointer,
-		__test_function_get_allocator,
-		__test_function_max_size,
-		__test_function_capacity,
-		__test_function_size,
-		__test_function_empty,
-		__test_function_begin_constant,
-		__test_function_begin_mutable,
-		__test_function_end_constant,
-		__test_function_end_mutable,
-		__test_function_rbegin_constant,
-		__test_function_rbegin_mutable,
-		__test_function_rend_constant,
-		__test_function_rend_mutable,
+		__test_method_get_allocator,
+		__test_method_max_size,
+		__test_method_capacity,
+		__test_method_size,
+		__test_method_empty,
+		__test_method_begin_constant,
+		__test_method_begin_mutable,
+		__test_method_end_constant,
+		__test_method_end_mutable,
+		__test_method_rbegin_constant,
+		__test_method_rbegin_mutable,
+		__test_method_rend_constant,
+		__test_method_rend_mutable,
 		__test_type_iterator,
 		__test_type_const_iterator,
 		__test_type_reverse_iterator,
 		__test_type_const_reverse_iterator,
-		__test_function_front_constant,
-		__test_function_front_mutable,
-		__test_function_back_constant,
-		__test_function_back_mutable,
-		__test_function_at_constant,
-		__test_function_at_mutable,
-		__test_function_insert_fill,
-		__test_function_insert_range,
-		__test_function_insert_single,
-		__test_function_erase_range,
-		__test_function_erase_single,
-		__test_function_push_back,
-		__test_function_pop_back,
-		__test_function_clear,
-		__test_function_assign_fill,
-		__test_function_assign_range,
-		__test_function_swap_member,
-		__test_function_swap_non_member,
-		__test_function_reserve,
-		__test_function_resize,
+		__test_method_front_constant,
+		__test_method_front_mutable,
+		__test_method_back_constant,
+		__test_method_back_mutable,
+		__test_method_at_constant,
+		__test_method_at_mutable,
+		__test_method_insert_fill,
+		__test_method_insert_range,
+		__test_method_insert_single,
+		__test_method_erase_range,
+		__test_method_erase_single,
+		__test_method_push_back,
+		__test_method_pop_back,
+		__test_method_clear,
+		__test_method_assign_fill,
+		__test_method_assign_range,
+		__test_method_swap,
+		__test_function_swap,
+		__test_method_reserve,
+		__test_method_resize,
 		__test_operator_assign,
-		__test_operator_access_constant,
-		__test_operator_access_mutable,
-		__test_operator_equivalent,
-		__test_operator_different,
-		__test_operator_lower,
-		__test_operator_greater,
-		__test_operator_lower_or_equivalent,
-		__test_operator_greater_or_equivalent,
+		__test_operator_subscript_constant,
+		__test_operator_subscript_mutable,
+		__test_operator_equal_to,
+		__test_operator_not_equal_to,
+		__test_operator_lower_than,
+		__test_operator_greater_than,
+		__test_operator_lower_than_or_equal_to,
+		__test_operator_greater_than_or_equal_to,
 		NULL
+		#pragma endregion
 	};
 	t_uint					koCount;
 	t_uint					idx;
