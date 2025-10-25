@@ -173,10 +173,8 @@ inline static pair<t_bool, time_t> test_case(
     return make_pair(ret, duration);
 }
 
-// clang-format off
-#define CANDIDATE  ft::equal
-#define REFERENCE std::equal
-// clang-format on
+# define CANDIDATE ft::equal
+# define REFERENCE std::equal
 
 template <typename InputIterator>
 inline static t_status test_each_case(
@@ -453,10 +451,8 @@ inline static pair<t_bool, time_t> test_case(
     return make_pair(ret, duration);
 }
 
-// clang-format off
-# define CANDIDATE  ft::lexicographical_compare
+# define CANDIDATE ft::lexicographical_compare
 # define REFERENCE std::lexicographical_compare
-// clang-format on
 
 template <typename InputIterator0, typename InputIterator1>
 inline static t_status test_each_case(
@@ -465,11 +461,13 @@ inline static t_status test_each_case(
     s_range<InputIterator1> const &range1
 )
 {
-    pair<t_bool, time_t> const candidate[] = {
+    typedef pair<t_bool, time_t> const t_case;
+
+    t_case candidate[] = {
         test_case(CANDIDATE, range0, range0),
         test_case(CANDIDATE, range0, range1),
     };
-    pair<t_bool, time_t> const reference[] = {
+    t_case reference[] = {
         test_case(REFERENCE, range0, range0),
         test_case(REFERENCE, range0, range1),
     };
@@ -492,11 +490,13 @@ inline static t_status test_each_case(
     BinaryPredicate const         &cmp
 )
 {
-    pair<t_bool, time_t> const candidate[] = {
+    typedef pair<t_bool, time_t> const t_case;
+
+    t_case candidate[] = {
         test_case(CANDIDATE, range0, range0, cmp),
         test_case(CANDIDATE, range0, range1, cmp),
     };
-    pair<t_bool, time_t> const reference[] = {
+    t_case reference[] = {
         test_case(REFERENCE, range0, range0, cmp),
         test_case(REFERENCE, range0, range1, cmp),
     };
@@ -662,9 +662,118 @@ inline t_status run_tests(
 
 } // namespace lexicographical_compare
 
+namespace swap {
+
+template <typename T>
+class c_context
+{
+# define SELF c_context
+
+public: /* fields */
+    T m_a;
+    T m_b;
+
+public: /* constructor */
+    SELF(
+        T const &a, T const &b
+    )
+    : m_a(a), m_b(b)
+    {}
+
+# undef SELF
+};
+
+template <typename T>
+inline static pair<pair<T, T>, time_t> test_case(
+    void (&function)(T &, T &), c_context<T> context
+)
+{
+    clock_t const start = clock();
+    function(context.m_a, context.m_b);
+    time_t const duration = clock() - start;
+
+    return make_pair(make_pair(context.m_a, context.m_b), duration);
+}
+
+# define CANDIDATE ft::swap
+# define REFERENCE std::swap
+
+template <typename T>
+inline static t_status test_each_case(
+    t_ratio_multiset_mut &ratios, c_context<T> const &context
+)
+{
+    typedef pair<pair<T, T>, time_t> const t_case;
+
+    t_case candidate[] = {
+        test_case(CANDIDATE, context),
+    };
+    t_case reference[] = {
+        test_case(REFERENCE, context),
+    };
+    t_usize len = sizeof(candidate) / sizeof(candidate[0]);
+
+    for (t_usize_mut i = 0; i < len; ++i) {
+        if (candidate[i].first != reference[i].first) {
+            return FAILURE;
+        }
+        ratios.add_entry(candidate[i].second, reference[i].second);
+    }
+    return SUCCESS;
+    {}
+}
+
+# undef CANDIDATE
+# undef REFERENCE
+
+inline static t_status test_each_type(
+    t_ratio_multiset_mut &ratios
+)
+{
+    typedef c_context<t_i32_mut> const t_i32_context;
+    typedef c_context<t_u16_mut> const t_u16_context;
+    typedef c_context<t_str_mut> const t_str_context;
+
+    t_i32_context i32_context(125, -42);
+    t_u16_context u16_context(~0, 0);
+    t_str_context str_context("foo", "bar");
+
+    t_status const results[] = {
+        test_each_case(ratios, i32_context),
+        test_each_case(ratios, u16_context),
+        test_each_case(ratios, str_context),
+    };
+    t_usize results_len = sizeof(results) / sizeof(results[0]);
+
+    for (t_usize_mut i = 0; i < results_len; ++i) {
+        if (results[i] == FAILURE) {
+            return FAILURE;
+        }
+    }
+    return SUCCESS;
+}
+
+inline t_status run_tests(
+    t_ratio_multiset_mut &ratios
+)
+{
+    nanosleep(&delay, NULL);
+    title("swap");
+    try {
+        return test_each_type(ratios);
+    }
+    catch (exception const &e) {
+        cerr << "Exception: " << e.what() << '\n';
+        return FAILURE;
+    }
+}
+
+} // namespace swap
+
 static t_subcategory SUBCATEGORIES[] = {
     {"equal",                   equal::run_tests,                   true},
     {"lexicographical_compare", lexicographical_compare::run_tests, true},
+    {"swap",                    swap::run_tests,                    true},
 };
 static t_usize SUBCATEGORIES_LEN = sizeof(SUBCATEGORIES) / sizeof(SUBCATEGORIES[0]);
 
