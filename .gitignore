@@ -1,7 +1,9 @@
-**.o
-**.d
-**.a
-**.so
-**.out
-**.log
-.vscode
+/*
+!src
+!private
+!resource
+!Makefile
+!LICENSE
+!README.md
+!illustration.png
+!.gitignore
