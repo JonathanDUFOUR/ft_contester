@@ -1,13 +1,13 @@
 #define DISABLE
 #ifndef DISABLE
 
-# include "type_traits.hh" // {false, true}_type, is_same
-# include "graphics.hh" // FG_{GREEN, RED, RGB}, GRAPHICS_RESET
-# include "iterator/restrictor/input.hh" // input_iterator_restrictor
-# include "tester.hh" // FAILURE, SUCCESS, delay, status, title
-# include "type_traits.hpp" // ft::{is_integral, false_type, true_type}
-# include "types/str.hh" // str
-# include <iostream> // std::{cerr, cout}
+# include "type_traits.hh"
+# include "graphics.hh"
+# include "iterator/restrictor/input.hh"
+# include "tester.hh"
+# include "type_traits.hpp"
+# include "types/str.hh"
+# include <iostream>
 
 namespace tester {
 namespace test {

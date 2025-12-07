@@ -1,16 +1,16 @@
 #define DISABLE
 #ifndef DISABLE
 
-# include "set.hpp" // ft::set
-# include "type/array.hh" // tester::array
-# include "type/range.hh" // tester::range
-# include "type/test/benchmark/ratio_multiset.hh" // tester::test::benchmark::t_ratio_multiset_mut
-# include "type/test/status.hh" // tester::test::t_status
-# include <ctime> // {clock,time}_t,clock
-# include <exception> // std::exception
-# include <functional> // std::{{,not_}equal_to,greater{,_equal},less{,_equal}}
-# include <iostream> // std::c{err,out}
-# include <set> // std::set
+# include "set.hpp"
+# include "type/array.hh"
+# include "type/range.hh"
+# include "type/test/benchmark/ratio_multiset.hh"
+# include "type/test/status.hh"
+# include <ctime>
+# include <exception>
+# include <functional>
+# include <iostream>
+# include <set>
 
 namespace tester { namespace test {
 

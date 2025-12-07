@@ -1,15 +1,17 @@
-#include "type/array.hh" // tester::array
-#include "type/filename.hh" // tester::t_filename
-#include "type/fundamentals.hh" // tester::t_{{i,u}{8,16,32,64},char}
-#include "type/str.hh" // tester::t_str
-#include <utility> // std::pair
+#if 0
+
+# include "type/filename.hh"
+# include <stdint.h>
+# include <string>
+# include <utility>
 
 namespace tester {
 
+using std::make_pair;
 using std::pair;
+using std::string;
 
-template <>
-t_filename array<t_filename>::s_inner[] = {
+t_filename const FILENAME_ARRAY[] = {
     "resource/alphabet",
     "resource/ascii",
     "resource/digits",
@@ -19,25 +21,62 @@ t_filename array<t_filename>::s_inner[] = {
     "resource/reverse_ascii",
     "resource/reverse_digits",
     "resource/reverse_alphabet",
-    "resource/reverse_lorem_ipsum"
+    "resource/reverse_lorem_ipsum",
 };
 
-template <>
-t_char array<t_char>::s_inner[] = {'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'};
-
-template <>
-t_i8 array<t_i8>::s_inner[] = {-10, 11, -12, 13, -14, 15, -16, 17, -18, 19};
-
-template <>
-t_i16 array<t_i16>::s_inner[] = {210, -211, 212, -213, 214, -215, 216, -217, 218, -219};
-
-template <>
-t_i32 array<t_i32>::s_inner[] = {
-    -1, -1234567890, -12, -123456789, -123, -12345678, -1234, -1234567, -12345, -123456
+char const CHAR_ARRAY[] = {
+    'Q',
+    'W',
+    'E',
+    'R',
+    'T',
+    'Y',
+    'U',
+    'I',
+    'O',
+    'P',
 };
 
-template <>
-t_i64 array<t_i64>::s_inner[] = {
+int8_t const INT8_ARRAY[] = {
+    -10,
+    11,
+    -12,
+    13,
+    -14,
+    15,
+    -16,
+    17,
+    -18,
+    19,
+};
+
+int16_t const INT16_ARRAY[] = {
+    210,
+    -211,
+    212,
+    -213,
+    214,
+    -215,
+    216,
+    -217,
+    218,
+    -219,
+};
+
+int32_t const INT32_ARRAY[] = {
+    -1,
+    -1234567890,
+    -12,
+    -123456789,
+    -123,
+    -12345678,
+    -1234,
+    -1234567,
+    -12345,
+    -123456,
+};
+
+int64_t const INT64_ARRAY[] = {
     1212121212121212,
     -2323232323232323,
     3434343434343434,
@@ -47,17 +86,36 @@ t_i64 array<t_i64>::s_inner[] = {
     7878787878787878,
     -8989898989898989,
     9090909090909090,
-    -0101010101010101
+    -0101010101010101,
 };
 
-template <>
-t_u8 array<t_u8>::s_inner[] = {255, 254, 253, 252, 251, 250, 249, 248, 247, 246};
+uint8_t const UINT8_ARRAY[] = {
+    255,
+    254,
+    253,
+    252,
+    251,
+    250,
+    249,
+    248,
+    247,
+    246,
+};
 
-template <>
-t_u16 array<t_u16>::s_inner[] = {0, 42, 84, 126, 168, 210, 252, 294, 336, 378};
+uint16_t const UINT16_ARRAY[] = {
+    0,
+    42,
+    84,
+    126,
+    168,
+    210,
+    252,
+    294,
+    336,
+    378,
+};
 
-template <>
-t_u32 array<t_u32>::s_inner[] = {
+uint32_t const UINT32_ARRAY[] = {
     4294967295,
     2147483647,
     1073741823,
@@ -67,11 +125,10 @@ t_u32 array<t_u32>::s_inner[] = {
     67108863,
     33554431,
     16777215,
-    8388607
+    8388607,
 };
 
-template <>
-t_u64 array<t_u64>::s_inner[] = {
+uint64_t const UINT64_ARRAY[] = {
     424242424242420,
     424242424242421,
     424242424242422,
@@ -81,17 +138,36 @@ t_u64 array<t_u64>::s_inner[] = {
     424242424242426,
     424242424242427,
     424242424242428,
-    424242424242429
+    424242424242429,
 };
 
-template <>
-t_float array<t_float>::s_inner[] = {9.9, 7.7, 8.8, 5.5, 6.6, 3.3, 4.4, 1.1, 2.2, -1.0};
+float const FLOAT_ARRAY[] = {
+    9.9,
+    7.7,
+    8.8,
+    5.5,
+    6.6,
+    3.3,
+    4.4,
+    1.1,
+    2.2,
+    -1.0,
+};
 
-template <>
-t_double array<t_double>::s_inner[] = {0.0, 1.9, 2.8, 3.7, 4.6, 5.5, 6.4, 7.3, 8.2, 9.1};
+double const DOUBLE_ARRAY[] = {
+    0.0,
+    1.9,
+    2.8,
+    3.7,
+    4.6,
+    5.5,
+    6.4,
+    7.3,
+    8.2,
+    9.1,
+};
 
-template <>
-t_long_double array<t_long_double>::s_inner[] = {
+long double const LONG_DOUBLE_ARRAY[] = {
     987654321.0,
     98765432.10,
     9876543.210,
@@ -104,8 +180,7 @@ t_long_double array<t_long_double>::s_inner[] = {
     .9876543210
 };
 
-template <>
-t_str array<t_str>::s_inner[] = {
+string const STRING_ARRAY[] = {
     "Where is the moment we needed the most?",
     "You kick up the leaves, and the magic is lost.",
     "They tell me your blue sky's faded to grey.",
@@ -118,18 +193,19 @@ t_str array<t_str>::s_inner[] = {
     "And I don't need to carrying on!"
 };
 
-template <>
-pair<t_i32, t_char> const array<pair<t_i32, t_char> >::s_inner[] = {
-    pair<t_i32, t_char>(0, 'Z'),
-    pair<t_i32, t_char>(1, 'Y'),
-    pair<t_i32, t_char>(2, 'X'),
-    pair<t_i32, t_char>(3, 'W'),
-    pair<t_i32, t_char>(4, 'V'),
-    pair<t_i32, t_char>(5, 'U'),
-    pair<t_i32, t_char>(6, 'T'),
-    pair<t_i32, t_char>(7, 'S'),
-    pair<t_i32, t_char>(8, 'R'),
-    pair<t_i32, t_char>(9, 'Q')
+pair<int32_t const, char const> const PAIR_ARRAY[] = {
+    make_pair(0, 'Z'),
+    make_pair(1, 'Y'),
+    make_pair(2, 'X'),
+    make_pair(3, 'W'),
+    make_pair(4, 'V'),
+    make_pair(5, 'U'),
+    make_pair(6, 'T'),
+    make_pair(7, 'S'),
+    make_pair(8, 'R'),
+    make_pair(9, 'Q')
 };
 
 } // namespace tester
+
+#endif

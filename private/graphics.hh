@@ -1,59 +1,58 @@
 #ifndef GRAPHICS_HH
 #define GRAPHICS_HH
 
-#include <iostream> // std::cerr
+#define ESC "\x1B"
+#define CSI ESC "["
 
-#define ESC          "\x1B"
-#define CSI          ESC "["
-#define SGR(VARIANT) CSI #VARIANT "m" /* Set Graphics Rendition */
+// Set Graphics Rendition
+#define SGR(VARIANT) CSI VARIANT "m"
 
-#define RESET_GRAPHICS                std::cerr << SGR(0)
-#define SET_INTENSITY_BOLD            std::cerr << SGR(1)
-#define SET_INTENSITY_DIM             std::cerr << SGR(2)
-#define ENABLE_ITALIC                 std::cerr << SGR(3)
-#define ENABLE_UNDERLINE              std::cerr << SGR(4)
-#define ENABLE_BLINK                  std::cerr << SGR(5)
-#define SET_INTENSITY_NORMAL          std::cerr << SGR(22)
-#define DISABLE_ITALIC                std::cerr << SGR(23)
-#define DISABLE_UNDERLINE             std::cerr << SGR(24)
-#define DISABLE_BLINK                 std::cerr << SGR(25)
-#define SET_FOREGROUND_BLACK          std::cerr << SGR(30)
-#define SET_FOREGROUND_RED            std::cerr << SGR(31)
-#define SET_FOREGROUND_GREEN          std::cerr << SGR(32)
-#define SET_FOREGROUND_YELLOW         std::cerr << SGR(33)
-#define SET_FOREGROUND_BLUE           std::cerr << SGR(34)
-#define SET_FOREGROUND_MAGENTA        std::cerr << SGR(35)
-#define SET_FOREGROUND_CYAN           std::cerr << SGR(36)
-#define SET_FOREGROUND_WHITE          std::cerr << SGR(37)
-#define SET_FOREGROUND_RGB(R, G, B)   std::cerr << SGR(38;2;R;G;B)
-#define SET_FOREGROUND_ID(ID)         std::cerr << SGR(38;5;ID)
-#define SET_FOREGROUND_DEFAULT        std::cerr << SGR(39)
-#define SET_BACKGROUND_BLACK          std::cerr << SGR(40)
-#define SET_BACKGROUND_RED            std::cerr << SGR(41)
-#define SET_BACKGROUND_GREEN          std::cerr << SGR(42)
-#define SET_BACKGROUND_YELLOW         std::cerr << SGR(43)
-#define SET_BACKGROUND_BLUE           std::cerr << SGR(44)
-#define SET_BACKGROUND_MAGENTA        std::cerr << SGR(45)
-#define SET_BACKGROUND_CYAN           std::cerr << SGR(46)
-#define SET_BACKGROUND_WHITE          std::cerr << SGR(47)
-#define SET_BACKGROUND_RGB(R, G, B)   std::cerr << SGR(48;2;R;G;B)
-#define SET_BACKGROUND_ID(ID)         std::cerr << SGR(48;5;ID)
-#define SET_BACKGROUND_DEFAULT        std::cerr << SGR(49)
-#define SET_FOREGROUND_BRIGHT_BLACK   std::cerr << SGR(90)
-#define SET_FOREGROUND_BRIGHT_RED     std::cerr << SGR(91)
-#define SET_FOREGROUND_BRIGHT_GREEN   std::cerr << SGR(92)
-#define SET_FOREGROUND_BRIGHT_YELLOW  std::cerr << SGR(93)
-#define SET_FOREGROUND_BRIGHT_BLUE    std::cerr << SGR(94)
-#define SET_FOREGROUND_BRIGHT_MAGENTA std::cerr << SGR(95)
-#define SET_FOREGROUND_BRIGHT_CYAN    std::cerr << SGR(96)
-#define SET_FOREGROUND_BRIGHT_WHITE   std::cerr << SGR(97)
-#define SET_BACKGROUND_BRIGHT_BLACK   std::cerr << SGR(100)
-#define SET_BACKGROUND_BRIGHT_RED     std::cerr << SGR(101)
-#define SET_BACKGROUND_BRIGHT_GREEN   std::cerr << SGR(102)
-#define SET_BACKGROUND_BRIGHT_YELLOW  std::cerr << SGR(103)
-#define SET_BACKGROUND_BRIGHT_BLUE    std::cerr << SGR(104)
-#define SET_BACKGROUND_BRIGHT_MAGENTA std::cerr << SGR(105)
-#define SET_BACKGROUND_BRIGHT_CYAN    std::cerr << SGR(106)
-#define SET_BACKGROUND_BRIGHT_WHITE   std::cerr << SGR(107)
+#define TEXT_BOLD                 ";1"
+#define TEXT_DIM                  ";2"
+#define TEXT_NORMAL               ";22"
+#define ITALIC_ON                 ";3"
+#define ITALIC_OFF                ";23"
+#define UNDERLINE_ON              ";4"
+#define UNDERLINE_OFF             ";24"
+#define BLINK_ON                  ";5"
+#define BLINK_OFF                 ";25"
+#define FOREGROUND_BLACK          ";30"
+#define FOREGROUND_RED            ";31"
+#define FOREGROUND_GREEN          ";32"
+#define FOREGROUND_YELLOW         ";33"
+#define FOREGROUND_BLUE           ";34"
+#define FOREGROUND_MAGENTA        ";35"
+#define FOREGROUND_CYAN           ";36"
+#define FOREGROUND_WHITE          ";37"
+#define FOREGROUND_RGB(R, G, B)   ";38;2;" #R ";" #G ";" #B
+#define FOREGROUND_ID(ID)         ";38;5;" #ID
+#define FOREGROUND_DEFAULT        ";39"
+#define BACKGROUND_BLACK          ";40"
+#define BACKGROUND_RED            ";41"
+#define BACKGROUND_GREEN          ";42"
+#define BACKGROUND_YELLOW         ";43"
+#define BACKGROUND_BLUE           ";44"
+#define BACKGROUND_MAGENTA        ";45"
+#define BACKGROUND_CYAN           ";46"
+#define BACKGROUND_WHITE          ";47"
+#define BACKGROUND_RGB(R, G, B)   ";48;2;" #R ";" #G ";" #B
+#define BACKGROUND_ID(ID)         ";48;5;" #ID
+#define BACKGROUND_DEFAULT        ";49"
+#define FOREGROUND_BRIGHT_BLACK   ";90"
+#define FOREGROUND_BRIGHT_RED     ";91"
+#define FOREGROUND_BRIGHT_GREEN   ";92"
+#define FOREGROUND_BRIGHT_YELLOW  ";93"
+#define FOREGROUND_BRIGHT_BLUE    ";94"
+#define FOREGROUND_BRIGHT_MAGENTA ";95"
+#define FOREGROUND_BRIGHT_CYAN    ";96"
+#define FOREGROUND_BRIGHT_WHITE   ";97"
+#define BACKGROUND_BRIGHT_BLACK   ";100"
+#define BACKGROUND_BRIGHT_RED     ";101"
+#define BACKGROUND_BRIGHT_GREEN   ";102"
+#define BACKGROUND_BRIGHT_YELLOW  ";103"
+#define BACKGROUND_BRIGHT_BLUE    ";104"
+#define BACKGROUND_BRIGHT_MAGENTA ";105"
+#define BACKGROUND_BRIGHT_CYAN    ";106"
+#define BACKGROUND_BRIGHT_WHITE   ";107"
 
 #endif

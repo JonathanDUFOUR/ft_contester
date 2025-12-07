@@ -4,19 +4,15 @@
 namespace tester {
 
 template <typename InputIterator>
-struct s_range {
-#define SELF s_range
-
+struct range {
     InputIterator first;
     InputIterator ptend;
 
-    SELF(
+    range(
         InputIterator const &first, InputIterator const &ptend
     )
     : first(first), ptend(ptend)
     {}
-
-#undef SELF
 };
 
 } // namespace tester

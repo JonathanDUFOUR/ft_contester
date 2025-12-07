@@ -1,13 +1,14 @@
-#include "tester.hh" // PADDING
-#include "type/str.hh" // tester::t_str_mut
-#include <iostream> // std::cout
+#include "tester.hh"
+#include <iostream>
+#include <string>
 
 namespace tester {
 
 using std::cout;
+using std::string;
 
 void title(
-    t_str_mut s
+    string s
 )
 {
     if (s.length() < PADDING) {

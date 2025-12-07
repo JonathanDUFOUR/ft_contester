@@ -1,8 +1,8 @@
 #ifndef TESTER_HH
 #define TESTER_HH
 
-#include "type/str.hh" // tester::t_str
-#include <ctime> // timespec
+#include <ctime>
+#include <string>
 
 namespace tester {
 
@@ -13,7 +13,7 @@ timespec const delay = {
     .tv_nsec = 0,
 };
 
-void title(t_str s);
+void title(std::string const s);
 
 } // namespace tester
 

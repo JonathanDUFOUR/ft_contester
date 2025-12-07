@@ -1,86 +1,95 @@
-#include "graphics.hh" // SET_FOREGROUND_RED,GRAPHICS_RESET
-#include "tests.hh" // tester::{CATEGORIES,CATEGORIES_LEN}
-#include "type/fundamentals.hh" // tester::t_u{8,size}
-#include "type/pointers.hh" // tester::t_char_mut_ptr
-#include "type/str.hh" // tester::t_str
-#include "type/test/category.hh" // tester::test::t_category_fn_ptr
-#include "type/test/status.hh" // tester::test::FAILURE
-#include <cstddef> // NULL
-#include <cstdlib> // srand
-#include <cstring> // strstr
-#include <ctime> // clock_t, time_t, time
-#include <iomanip> // std::setprecision, std::fixed
-#include <iostream> // std::{cerr, cout}
-#include <map> // std::map
+#include "categories.hh"
+#include "graphics.hh"
+#include "type/category.hh"
+#include "type/status.hh"
+#include "type/subcategory.hh"
+#include <cstddef>
+#include <cstdlib>
+#include <ctime>
+#include <iomanip>
+#include <iostream>
+#include <map>
+#include <string>
+#include <utility>
 
 using std::cout;
 using std::fixed;
-using std::make_pair;
-using std::map;
 using std::setprecision;
-using tester::CATEGORIES;
-using tester::CATEGORIES_LEN;
-using tester::t_char_mut_ptr;
-using tester::t_str;
-using tester::t_u8;
-using tester::t_u8_mut;
-using tester::t_usize_mut;
-using tester::test::FAILURE;
-using tester::test::t_category_fn_ptr;
 
-inline static t_u8 run_default_categories()
+namespace tester {
+
+using std::cerr;
+using std::make_pair;
+using std::pair;
+using std::string;
+
+inline static size_t run_default_categories()
 {
-    t_u8_mut failure_count = 0;
+    size_t             failure_count = 0;
+    subcategory::t_set subcategories;
 
-    for (t_usize_mut i = 0; i < CATEGORIES_LEN; ++i) {
-        if (CATEGORIES[i].run_by_default && CATEGORIES[i](NULL) == FAILURE) {
+    subcategories.insert("*");
+    for (size_t i = 0; i < CATEGORIES_LEN; ++i) {
+        if (CATEGORIES[i].run_by_default && CATEGORIES[i](subcategories) == FAILURE) {
             ++failure_count;
         }
     }
     return failure_count;
 }
 
-inline static t_u8 run_specific_categories(
-    char *const *categories __attribute__((nonnull))
+inline static size_t run_specific_categories(
+    size_t ac, char *const *const av __attribute__((nonnull))
 )
 {
-    t_u8_mut                                      failure_count = 0;
-    map<t_str, t_category_fn_ptr>                 tests;
-    map<t_str, t_category_fn_ptr>::const_iterator iter;
+    typedef std::map<string, pair<category::t_fn, subcategory::t_set> > t_target_map;
 
-    for (t_usize_mut i = 0; i < CATEGORIES_LEN; ++i) {
-        tests.insert(make_pair(CATEGORIES[i].name, CATEGORIES[i].function));
+    t_target_map valid_targets;
+
+    for (size_t i = 0; i < CATEGORIES_LEN; ++i) {
+        valid_targets.insert(
+            make_pair(CATEGORIES[i].name, make_pair(CATEGORIES[i].function, subcategory::t_set()))
+        );
     }
-    for (t_usize_mut i = 1; categories[i]; ++i) {
-        char *subcategories = strstr(categories[i], "::");
+    while (--ac) {
+        string const                 arg       = av[ac];
+        string::size_type const      separator = arg.find("::");
+        string const                 category  = arg.substr(0, separator);
+        t_target_map::iterator const target    = valid_targets.find(category);
 
-        if (subcategories) {
-            subcategories[0]  = 0;
-            subcategories    += 2;
-        }
-        iter = tests.find(categories[i]);
-        if (iter == tests.end()) {
-            SET_FOREGROUND_RED;
+        if (target == valid_targets.end()) {
+            cerr << SGR(FOREGROUND_RED);
             cout << "ERROR";
-            RESET_GRAPHICS;
-            cout << ": '" << categories[i] << "' tests not found\n";
+            cerr << SGR();
+            cout << ": '" << category << "' category not found\n";
+            continue;
         }
-        else if (iter->second(subcategories) == FAILURE) {
+        target->second.second.insert(separator == string::npos ? "*" : arg.substr(separator + 2));
+    }
+    size_t failure_count = 0;
+
+    for (t_target_map::const_iterator itr = valid_targets.begin(); itr != valid_targets.end();
+         ++itr) {
+        if (itr->second.second.empty()) {
+            continue;
+        }
+        if (itr->second.first(itr->second.second) == FAILURE) {
             ++failure_count;
         }
     }
     return failure_count;
 }
 
+} // namespace tester
+
 int main(
-    int const ac, t_char_mut_ptr *av
+    int const ac, char *const *const av
 )
 {
     cout << setprecision(2) << fixed;
     srand(time(NULL));
 
     if (ac == 1) {
-        return !!run_default_categories();
+        return !!tester::run_default_categories();
     }
-    return !!run_specific_categories(av);
+    return !!tester::run_specific_categories(ac, av);
 }

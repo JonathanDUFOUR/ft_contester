@@ -1,7 +1,7 @@
 #ifndef ITERATOR_REQUIREMENT_CHECKS_HH
 #define ITERATOR_REQUIREMENT_CHECKS_HH
 
-#include <iterator> // std::iterator_traits
+#include <iterator>
 
 namespace tester {
 

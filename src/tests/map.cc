@@ -1,13 +1,13 @@
 #define DISABLE
 #ifndef DISABLE
 
-# include "map.hpp" // ft::map
+# include "map.hpp"
 # include "type/test/benchmark/ratio_multiset.hh"
-# include "utility.hpp" // ft::pair
-# include <ctime> // clock, clock_t, time_t, nanosleep
+# include "utility.hpp"
+# include <ctime>
 # include <exception>
-# include <map> // std::map
-# include <utility> // std::pair
+# include <map>
+# include <utility>
 
 namespace tester { namespace test {
 
