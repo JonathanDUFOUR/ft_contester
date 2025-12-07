@@ -3,7 +3,6 @@
 # include "type/filename.hh"
 # include <stdint.h>
 # include <string>
-# include <utility>
 
 namespace tester {
 

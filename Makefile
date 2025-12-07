@@ -89,7 +89,7 @@ endif
 
 #########
 # RULES #
-########
+#########
 $(BIN): $(OBJ)
 	$(MKDIR) $(@D)
 	$(LINK) $(LDFLAGS) $^ $(OUTPUT_OPTION)

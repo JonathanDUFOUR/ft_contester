@@ -1,16 +1,9 @@
 #include "categories.hh"
 #include "graphics.hh"
-#include "type/category.hh"
-#include "type/status.hh"
-#include "type/subcategory.hh"
-#include <cstddef>
 #include <cstdlib>
-#include <ctime>
 #include <iomanip>
 #include <iostream>
 #include <map>
-#include <string>
-#include <utility>
 
 using std::cout;
 using std::fixed;

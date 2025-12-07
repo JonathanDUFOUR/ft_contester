@@ -1,6 +1,5 @@
 #include "tester.hh"
 #include <iostream>
-#include <string>
 
 namespace tester {
 

@@ -6,7 +6,6 @@
 
 namespace tester { namespace benchmark {
 
-using std::_Setw;
 using std::accumulate;
 using std::cerr;
 using std::cout;
@@ -30,24 +29,23 @@ void t_ratio_multiset::fancy_print(
     float const ratio
 ) const
 {
-    static _Setw const FWIDTH_SET   = setw(5);
-    static _Setw const FWIDTH_RESET = setw(0);
+    static int const FWIDTH = 5;
 
     if (ratio > 20) {
         cerr << SGR(FOREGROUND_RED);
-        cout << FWIDTH_SET << ratio << FWIDTH_RESET << "x slower";
+        cout << setw(FWIDTH) << ratio << setw(0) << "x slower";
         cerr << SGR();
         return;
     }
     if (ratio > 10) {
         cerr << SGR(FOREGROUND_YELLOW);
-        cout << FWIDTH_SET << ratio << FWIDTH_RESET << "x slower";
+        cout << setw(FWIDTH) << ratio << setw(0) << "x slower";
         cerr << SGR();
         return;
     }
     if (ratio > 1) {
         cerr << SGR(FOREGROUND_GREEN);
-        cout << FWIDTH_SET << ratio << FWIDTH_RESET << "x slower";
+        cout << setw(FWIDTH) << ratio << setw(0) << "x slower";
         cerr << SGR();
         return;
     }
@@ -57,7 +55,7 @@ void t_ratio_multiset::fancy_print(
         BACKGROUND_MAGENTA
         FOREGROUND_BRIGHT_GREEN
     );
-    cout << FWIDTH_SET << 1 / ratio << FWIDTH_RESET << "x faster";
+    cout << setw(FWIDTH) << 1 / ratio << setw(0) << "x faster";
     cerr << SGR();
 }
 
