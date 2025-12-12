@@ -1,10 +1,15 @@
 #include "algorithm.hpp"
-#include "tester.hh"
+#include "delay.hh"
+#include "title.hh"
 #include "type/benchmark/ratio_multiset.hh"
 #include "type/iterator_restrictor/input.hh"
 #include "type/range.hh"
 #include "type/status.hh"
+#include "type/title/low_level.hh"
 #include <iostream>
+
+#define CANDIDATE ft::equal
+#define REFERENCE std::equal
 
 namespace tester { namespace algorithm { namespace equal {
 
@@ -121,14 +126,15 @@ public: /* constructor */
 
 template <typename InputIterator>
 inline static pair<bool, time_t> test_case(
-    bool (&fn)(InputIterator, InputIterator, InputIterator),
-    //
+    bool (&function)(//
+        InputIterator, InputIterator, InputIterator
+    ),
     range<InputIterator> const &range0,
     InputIterator const        &first1
 )
 {
     clock_t const start    = clock();
-    bool const    ret      = fn(range0.first, range0.ptend, first1);
+    bool const    ret      = function(range0.first, range0.ptend, first1);
     time_t const  duration = clock() - start;
 
     return make_pair(ret, duration);
@@ -136,24 +142,20 @@ inline static pair<bool, time_t> test_case(
 
 template <typename InputIterator, typename BinaryPredicate>
 inline static pair<bool, time_t> test_case(
-    bool (&fn)(InputIterator, InputIterator, InputIterator, BinaryPredicate),
-    //
+    bool (&function)(//
+        InputIterator, InputIterator, InputIterator, BinaryPredicate
+    ),
     range<InputIterator> const &range0,
     InputIterator const        &first1,
     BinaryPredicate const      &cmp
 )
 {
     clock_t const start    = clock();
-    bool const    ret      = fn(range0.first, range0.ptend, first1, cmp);
+    bool const    ret      = function(range0.first, range0.ptend, first1, cmp);
     time_t const  duration = clock() - start;
 
     return make_pair(ret, duration);
 }
-
-#undef CANDIDATE
-#undef REFERENCE
-#define CANDIDATE ft::equal
-#define REFERENCE std::equal
 
 template <typename InputIterator>
 inline static t_status test_each_case(
@@ -303,7 +305,7 @@ t_status run_tests(
 )
 {
     nanosleep(&delay, NULL);
-    title("equal");
+    title::print(title::t_low_level("equal"));
     try {
         return test_each_type(ratios);
     }

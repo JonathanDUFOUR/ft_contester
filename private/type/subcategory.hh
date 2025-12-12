@@ -3,18 +3,15 @@
 
 #include "type/benchmark/ratio_multiset.hh"
 #include "type/status.hh"
-#include <string>
 
 namespace tester { namespace subcategory {
 
-typedef std::set<std::string> t_set;
-
-typedef t_status (*t_fn)(benchmark::t_ratio_multiset &);
+typedef t_status (*t_function)(benchmark::t_ratio_multiset &);
 
 struct type {
-    char const *name;
-    t_fn const  function;
-    bool        run_by_default;
+    char const      *name;
+    t_function const function;
+    bool             run_by_default;
 
     t_status operator()(
         benchmark::t_ratio_multiset &ratios

@@ -1,9 +1,15 @@
 #include "categories.hh"
-#include "graphics.hh"
+#include "error.hh"
+#include "type/category/name.hh"
+#include "type/category/name_set.hh"
+#include "type/category/target.hh"
+#include "type/category/target_map.hh"
+#include "type/error/target_not_found.hh"
+#include "type/status.hh"
+#include <algorithm>
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
-#include <map>
 
 using std::cout;
 using std::fixed;
@@ -11,78 +17,155 @@ using std::setprecision;
 
 namespace tester {
 
-using std::cerr;
+using std::for_each;
 using std::make_pair;
-using std::pair;
+using std::setw; // DEBUG
 using std::string;
 
-inline static size_t run_default_categories()
-{
-    size_t             failure_count = 0;
-    subcategory::t_set subcategories;
-
-    subcategories.insert("*");
-    for (size_t i = 0; i < CATEGORIES_LEN; ++i) {
-        if (CATEGORIES[i].run_by_default && CATEGORIES[i](subcategories) == FAILURE) {
-            ++failure_count;
-        }
-    }
-    return failure_count;
-}
-
-inline static size_t run_specific_categories(
-    size_t ac, char *const *const av __attribute__((nonnull))
+inline static void prepare_valid_targets(
+    category::t_target_map &targets
 )
 {
-    typedef std::map<string, pair<category::t_fn, subcategory::t_set> > t_target_map;
-
-    t_target_map valid_targets;
-
-    for (size_t i = 0; i < CATEGORIES_LEN; ++i) {
-        valid_targets.insert(
-            make_pair(CATEGORIES[i].name, make_pair(CATEGORIES[i].function, subcategory::t_set()))
-        );
+    for (size_t i = 0; i < HOW_MANY_CATEGORIES; ++i) {
+        targets.insert(make_pair(
+            CATEGORIES[i].name,
+            category::t_target(CATEGORIES[i].function, CATEGORIES[i].run_by_default)
+        ));
     }
-    while (--ac) {
-        string const                 arg       = av[ac];
-        string::size_type const      separator = arg.find("::");
-        string const                 category  = arg.substr(0, separator);
-        t_target_map::iterator const target    = valid_targets.find(category);
+}
 
-        if (target == valid_targets.end()) {
-            cerr << SGR(FOREGROUND_RED);
-            cout << "ERROR";
-            cerr << SGR();
-            cout << ": '" << category << "' category not found\n";
-            continue;
-        }
-        target->second.second.insert(separator == string::npos ? "*" : arg.substr(separator + 2));
-    }
-    size_t failure_count = 0;
+inline static void propagate_tag_all(
+    category::t_target_map::value_type &target
+)
+{
+    target.second.m_subtargets.clear();
+    target.second.m_subtargets.insert("/a");
+}
 
-    for (t_target_map::const_iterator itr = valid_targets.begin(); itr != valid_targets.end();
-         ++itr) {
-        if (itr->second.second.empty()) {
-            continue;
-        }
-        if (itr->second.first(itr->second.second) == FAILURE) {
-            ++failure_count;
+inline static void propagate_tag_default(
+    category::t_target_map::value_type &target
+)
+{
+    if (target.second.m_run_by_default) {
+        target.second.m_subtargets.insert("/d");
+    }
+}
+
+//! \return `true` if the entire target processing can stop here, `false` otherwise
+//!
+inline static bool process_target_name(
+    category::t_name const &raw_target_name, category::t_target_map &targets
+)
+{
+    category::t_name::size_type const      separator   = raw_target_name.find("::");
+    category::t_name const                 target_name = raw_target_name.substr(0, separator);
+    category::t_target_map::iterator const target      = targets.find(target_name);
+
+    if (target_name == "/a" || target_name == "/all") {
+        for_each(targets.begin(), targets.end(), propagate_tag_all);
+        return true;
+    }
+    if (target_name == "/d" || target_name == "/default") {
+        for_each(targets.begin(), targets.end(), propagate_tag_default);
+        return false;
+    }
+    if (target == targets.end()) {
+        error::print(error::t_target_not_found(target_name));
+        return false;
+    }
+    target->second.m_subtargets.insert(
+        separator == category::t_name::npos ? "/d" : raw_target_name.substr(separator + 2)
+    );
+    return false;
+}
+
+inline static void record_targets_to_run(
+    category::t_name_set const &target_names, category::t_target_map &targets
+)
+{
+    typedef category::t_name_set::const_iterator t_iterator;
+
+    for (t_iterator itr = target_names.begin(); itr != target_names.end(); ++itr) {
+        if (process_target_name(*itr, targets)) {
+            break;
         }
     }
-    return failure_count;
+}
+
+inline static void print_target(
+    category::t_target const &target
+)
+{
+    typedef category::t_name_set::const_iterator t_iterator;
+
+    cout << "{ run_by_default: " << target.m_run_by_default << ", subtargets: [ ";
+    for (t_iterator itr = target.m_subtargets.begin(); itr != target.m_subtargets.end(); ++itr) {
+        cout << *itr << ' ';
+    }
+    cout << "] }";
+}
+
+inline static void print_targets(
+    category::t_target_map const &targets
+)
+{
+    typedef category::t_target_map::const_iterator t_iterator;
+
+    cout << "targets: [\n";
+    for (t_iterator itr = targets.begin(); itr != targets.end(); ++itr) {
+        category::t_name const   &target_name = itr->first;
+        category::t_target const &target      = itr->second;
+
+        cout << setw(11) << target_name << ": ";
+        print_target(target);
+        cout << '\n';
+    }
+    cout << "]\n";
+}
+
+inline static t_status run_targets(
+    category::t_target_map &targets
+)
+{
+    typedef category::t_target_map::const_iterator t_iterator;
+
+    t_status overall_status = SUCCESS;
+
+    for (t_iterator itr = targets.begin(); itr != targets.end(); ++itr) {
+        category::t_target const &target = itr->second;
+
+        if (!target.m_subtargets.empty() && target.m_function(target.m_subtargets) == FAILURE) {
+            overall_status = FAILURE;
+        }
+    }
+    return overall_status;
+}
+
+inline static t_status run_tests(
+    category::t_name_set const &target_names
+)
+{
+    category::t_target_map targets;
+
+    prepare_valid_targets(targets);
+    record_targets_to_run(target_names, targets);
+    print_targets(targets);
+    return run_targets(targets);
 }
 
 } // namespace tester
 
 int main(
-    int const ac, char *const *const av
+    int const ac, char const *const *const av
 )
 {
     cout << setprecision(2) << fixed;
     srand(time(NULL));
 
-    if (ac == 1) {
-        return !!tester::run_default_categories();
+    tester::category::t_name_set target_names(&av[1], &av[ac]);
+
+    if (target_names.empty()) {
+        target_names.insert("/d");
     }
-    return !!tester::run_specific_categories(ac, av);
+    return tester::run_tests(target_names);
 }

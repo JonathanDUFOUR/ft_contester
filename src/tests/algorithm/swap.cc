@@ -1,8 +1,13 @@
 #include "algorithm.hpp"
-#include "tester.hh"
+#include "delay.hh"
+#include "title.hh"
 #include "type/benchmark/ratio_multiset.hh"
 #include "type/status.hh"
+#include "type/title/low_level.hh"
 #include <iostream>
+
+#define CANDIDATE ft::swap
+#define REFERENCE std::swap
 
 namespace tester { namespace algorithm { namespace swap {
 
@@ -27,20 +32,18 @@ struct context {
 
 template <typename T>
 inline static pair<pair<T, T>, time_t> test_case(
-    void (&fn)(T &, T &), context<T> ctxt
+    void (&function)(//
+        T &, T &
+    ),
+    context<T> ctxt
 )
 {
     clock_t const start = clock();
-    fn(ctxt.m_a, ctxt.m_b);
+    function(ctxt.m_a, ctxt.m_b);
     time_t const duration = clock() - start;
 
     return make_pair(make_pair(ctxt.m_a, ctxt.m_b), duration);
 }
-
-#undef CANDIDATE
-#undef REFERENCE
-#define CANDIDATE ft::swap
-#define REFERENCE std::swap
 
 template <typename T>
 inline static t_status test_each_case(
@@ -93,7 +96,7 @@ t_status run_tests(
 )
 {
     nanosleep(&delay, NULL);
-    title("swap");
+    title::print(title::t_low_level("swap"));
     try {
         return test_each_type(ratios);
     }

@@ -1,18 +1,17 @@
-#include "targets/algorithm.hh"
+#include "targets/utility.hh"
 #include "graphics.hh"
-#include "title.hh"
-#include "type/category/name_set.hh"
+#include "type/category.hh"
 #include "type/status.hh"
-#include "type/title/high_level.hh"
+#include "type/subcategory.hh"
 #include <iostream>
 #include <map>
+#include <string>
 
-namespace tester { namespace algorithm {
+namespace tester { namespace utility {
 
 using benchmark::t_ratio_multiset;
 using std::cerr;
 using std::cout;
-using std::make_pair;
 using std::map;
 using std::set;
 using std::string;
@@ -40,34 +39,34 @@ inline static t_status run_subcategory(
     return result;
 }
 
-inline static t_status run_all()
+inline static t_status run_all_subcategories()
 {
     size_t failure_count = 0;
 
-    for (size_t i = 0; i < HOW_MANY_TARGETS; ++i) {
-        if (run_subcategory(TARGETS[i].function) == FAILURE) {
+    for (size_t i = 0; i < SUBCATEGORIES_LEN; ++i) {
+        if (run_subcategory(SUBCATEGORIES[i].function) == FAILURE) {
             ++failure_count;
         }
     }
     return failure_count ? FAILURE : SUCCESS;
 }
 
-inline static t_status run_default()
+inline static t_status run_default_subcategories()
 {
     size_t failure_count = 0;
 
-    for (size_t i = 0; i < HOW_MANY_TARGETS; ++i) {
-        if (!TARGETS[i].run_by_default) {
+    for (size_t i = 0; i < SUBCATEGORIES_LEN; ++i) {
+        if (!SUBCATEGORIES[i].run_by_default) {
             continue;
         }
-        if (run_subcategory(TARGETS[i].function) == FAILURE) {
+        if (run_subcategory(SUBCATEGORIES[i].function) == FAILURE) {
             ++failure_count;
         }
     }
     return failure_count ? FAILURE : SUCCESS;
 }
 
-inline static t_status run_specific(
+inline static t_status run_specific_subcategories(
     category::t_name_set const &targets
 )
 {
@@ -77,8 +76,8 @@ inline static t_status run_specific(
     t_ratio_multiset ratios;
     size_t           failure_count = 0;
 
-    for (size_t i = 0; i < HOW_MANY_TARGETS; ++i) {
-        valid_targets.insert(make_pair(TARGETS[i].name, TARGETS[i].function));
+    for (size_t i = 0; i < SUBCATEGORIES_LEN; ++i) {
+        valid_targets.insert(std::make_pair(SUBCATEGORIES[i].name, SUBCATEGORIES[i].function));
     }
     for (set<string>::const_iterator itr = targets.begin(); itr != targets.end(); ++itr) {
         t_target_map::const_iterator const target = valid_targets.find(*itr);
@@ -101,15 +100,22 @@ t_status run_tests(
     category::t_name_set const &targets
 )
 {
-    title::print(title::t_high_level("ALGORITHM"));
+    cerr << SGR(
+        TEXT_BOLD
+        FOREGROUND_BRIGHT_BLUE
+    );
+    cout << "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n";
+    cout << "┃                     UTILITY                     ┃\n";
+    cout << "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n";
+    cerr << SGR();
 
     if (targets.find("#all") != targets.end()) {
-        return run_all();
+        return run_all_subcategories();
     }
     if (targets.find("#default") != targets.end()) {
-        return run_default();
+        return run_default_subcategories();
     }
-    return run_specific(targets);
+    return run_specific_subcategories(targets);
 }
 
-}} // namespace tester::algorithm
+}} // namespace tester::utility

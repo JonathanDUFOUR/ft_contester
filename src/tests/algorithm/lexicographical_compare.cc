@@ -1,10 +1,15 @@
 #include "algorithm.hpp"
-#include "tester.hh"
+#include "delay.hh"
+#include "title.hh"
 #include "type/benchmark/ratio_multiset.hh"
 #include "type/iterator_restrictor/input.hh"
 #include "type/range.hh"
 #include "type/status.hh"
+#include "type/title/low_level.hh"
 #include <iostream>
+
+#define CANDIDATE ft::lexicographical_compare
+#define REFERENCE std::lexicographical_compare
 
 namespace tester { namespace algorithm { namespace lexicographical_compare {
 
@@ -132,14 +137,15 @@ public: /* constructor */
 
 template <typename InputIterator0, typename InputIterator1>
 inline static pair<bool, time_t> test_case(
-    bool (&fn)(InputIterator0, InputIterator0, InputIterator1, InputIterator1),
-    //
+    bool (&function)(//
+        InputIterator0, InputIterator0, InputIterator1, InputIterator1
+    ),
     range<InputIterator0> const &range0,
     range<InputIterator1> const &range1
 )
 {
     clock_t const start    = clock();
-    bool const    ret      = fn(range0.first, range0.ptend, range1.first, range1.ptend);
+    bool const    ret      = function(range0.first, range0.ptend, range1.first, range1.ptend);
     time_t const  duration = clock() - start;
 
     return make_pair(ret, duration);
@@ -147,24 +153,20 @@ inline static pair<bool, time_t> test_case(
 
 template <typename InputIterator0, typename InputIterator1, typename BinaryPredicate>
 inline static pair<bool, time_t> test_case(
-    bool (&fn)(InputIterator0, InputIterator0, InputIterator1, InputIterator1, BinaryPredicate),
-    //
+    bool (&function)(//
+        InputIterator0, InputIterator0, InputIterator1, InputIterator1, BinaryPredicate
+    ),
     range<InputIterator0> const &range0,
     range<InputIterator1> const &range1,
     BinaryPredicate const       &cmp
 )
 {
     clock_t const start    = clock();
-    bool const    ret      = fn(range0.first, range0.ptend, range1.first, range1.ptend, cmp);
+    bool const    ret      = function(range0.first, range0.ptend, range1.first, range1.ptend, cmp);
     time_t const  duration = clock() - start;
 
     return make_pair(ret, duration);
 }
-
-#undef CANDIDATE
-#undef REFERENCE
-#define CANDIDATE ft::lexicographical_compare
-#define REFERENCE std::lexicographical_compare
 
 template <typename InputIterator0, typename InputIterator1>
 inline static t_status test_each_case(
@@ -353,7 +355,7 @@ t_status run_tests(
 )
 {
     nanosleep(&delay, NULL);
-    title("lexicographical_compare");
+    title::print(title::t_low_level("lexicographical_compare"));
     try {
         return test_each_type(ratios);
     }

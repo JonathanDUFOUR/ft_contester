@@ -3,9 +3,9 @@
 
 #include "type/category.hh"
 
-#define DECLARE(category)                                                  \
-    namespace category { t_status run_tests(subcategory::t_set const &); }
-#define TEST(category) #category, category::run_tests
+#define DECLARE(category_name)                                                    \
+    namespace category_name { t_status run_tests(category::t_name_set const &); }
+#define CATEGORY(category_name) #category_name, category_name::run_tests
 
 namespace tester {
 
@@ -34,29 +34,30 @@ DECLARE(utility);
 
 static category::type const CATEGORIES[] = {
     // Sequence containers
-    // {TEST(list),           true},
-    // {TEST(deque),          true},
-    // {TEST(vector),         true},
+    // {CATEGORY(list),           true},
+    // {CATEGORY(deque),          true},
+    // {CATEGORY(vector),         true},
 
     // Associative containers
-    // {TEST(map),            true},
-    // {TEST(set),            true},
-    // {TEST(multimap),       true},
-    // {TEST(multiset),       true},
+    // {CATEGORY(map),            true},
+    // {CATEGORY(set),            true},
+    // {CATEGORY(multimap),       true},
+    // {CATEGORY(multiset),       true},
 
     // Container adaptors
-    // {TEST(queue),          true},
-    // {TEST(priority_queue), true},
-    // {TEST(stack),          true},
+    // {CATEGORY(queue),          true},
+    // {CATEGORY(priority_queue), true},
+    // {CATEGORY(stack),          true},
 
     // Others
-    {TEST(algorithm), true},
-    // {TEST(is_integral),    true},
-    // {TEST(iterator),       true},
-    // {TEST(red_black_tree), true},
-    // {TEST(utility),        true},
+    {CATEGORY(algorithm), false},
+
+    // {CATEGORY(is_integral),    true},
+    // {CATEGORY(iterator),       true},
+    // {CATEGORY(red_black_tree), true},
+    {CATEGORY(utility),   true },
 };
-static size_t const CATEGORIES_LEN = sizeof(CATEGORIES) / sizeof(CATEGORIES[0]);
+static size_t const HOW_MANY_CATEGORIES = sizeof(CATEGORIES) / sizeof(CATEGORIES[0]);
 
 } // namespace tester
 
